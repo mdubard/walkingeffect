@@ -1,4 +1,5 @@
 /* Class to represent a Path object
+ * Author: Alyssa Rivera
  * Created: December 7th, 2015
  * Last Modified: December 7th, 2015
  * Known Bugs: none
