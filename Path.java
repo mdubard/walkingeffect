@@ -6,9 +6,9 @@
  */
 
 public class Path implements Comparable {
-  double time; //time in minutes needed to walk the path at normal rate 
-  double distance; //distance of path in feet (???)
-  boolean hasStairs; boolean hasHills;
+  private double time; //time in minutes needed to walk the path at normal rate 
+  private double distance; //distance of path in feet (???)
+  private boolean hasStairs; boolean hasHills;
   
   
   /**
