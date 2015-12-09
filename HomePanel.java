@@ -30,7 +30,7 @@ public class HomePanel extends JPanel{
     header = new JLabel("\nPick your origin and destination below to receive the quickest path between them!", SwingConstants.CENTER);
     header.setFont(new Font("Courier New", Font.PLAIN, 16));
     
-    String[] locs = {"(1) Acad Quad", "(2) Library", "(3) Lulu", "(4) Res Quad", "(5) Science Center"}; 
+    String[] locs = {"(1) Sports Center", "(2) Res Quad", "(3) Alumnae Hall", "(4) Lulu", "(5) Acad Quad", "(6) Science Center", "(7) Tower Court", "(8) Library", "(9) Stone Davis", "(10) East Dorms"}; 
     //^^will be taken from Map object
     
     //initialize combo boxes, using String array ratings for values
@@ -65,7 +65,7 @@ public class HomePanel extends JPanel{
     //creates panel for map and key
     map = new JPanel();
     map.setLayout(new BoxLayout(map, BoxLayout.X_AXIS));
-    map.add(Box.createRigidArea(new Dimension(100, 0)));
+    //map.add(Box.createRigidArea(new Dimension(100, 0)));
     
     //adds map image
     try{
@@ -83,15 +83,18 @@ public class HomePanel extends JPanel{
       System.out.println(io);
     }
     
-    keyText = new JTextArea(1, 10);
+    keyText = new JTextArea(12, 20);
+    keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
-    keyText.setRows(1);
+    keyText.append("Map Key: ");
+    //keyText.setRows(1);
     for(int i = 0; i < locs.length; i++){
-      keyText.append(locs[i]);
       keyText.append("\n");
+      keyText.append(locs[i]);
     }
     
     JScrollPane jp = new JScrollPane(keyText);
+    jp.setMaximumSize(keyText.getPreferredSize());
     map.add(jp);
     
     //Initializes footer
@@ -110,9 +113,9 @@ public class HomePanel extends JPanel{
       //save combo box values as a string, if no value was chosen, the default value is 1
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
-      //call getDirections(origString, destString)
       
       footer.setText("Directions from " + origString + " to " + destString + ".");
+      //add getDirections(origString, destString) to footer
     }
   }
 }
