@@ -37,7 +37,7 @@ public class WalkingEffectGUI{
     frame.getContentPane().add(tp);
     //sets size
     frame.setPreferredSize(new Dimension(1000,500));
-    frame.setResizable(false);
+    //frame.setResizable(false);
     frame.pack();
     
     //shows frame
