@@ -428,21 +428,46 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    * getDirections(Location a, Location b)
    * Returns directions for shortest path between a and b
    **/ 
-  public String getDirections(Location orig, Location dest){
+  public int[] getDirections(Location orig, Location dest){
     double[] tempDistances = new double[n];
-    Location[] previous = new Location[n];
-    for(int i = 0; i < n; i++){
-      tempDistances[i] = INFINITY;
-    }
-    tempDistances[getIndex(orig)] = 0;
     PriorityQueue<Location> q = new PriorityQueue<Location>();
-    q.add(orig);
-    while(!q.isEmpty()){
-      Location temp = q.poll();
+    int[] previous = new int[n]; //stores index of node visited before
+    
+    for(Location L : vertices){
+      L.setDistance(INFINITY);
     }
-    return "";
+    
+    orig.setDistance(0);
+    
+    for(int i = 0; i < n; i++){
+      q.enqueue(vertices[i]);
+    }
+    
+    while(!q.isEmpty()){
+      Location temp = q.dequeue();
+      LinkedList<Location> babies = getSuccessors(temp);
+      while(babies.peek() != null){
+        Location baby = babies.remove();
+        double alt = temp.getDistance() + getDistanceBetween(temp, baby);
+        if(alt < baby.getDistance()){
+          baby.setDistance(alt);
+          previous[getIndex(baby)] = getIndex(temp);
+        }  
+      }
+    }
+    
+    return previous;
   }
-
+  
+  private double getDistanceBetween(Location a, Location b){
+    //if b is a successor of a
+    LinkedList successors = getSuccessors(a);
+    if(!successors.contains(b))
+      return NOT_FOUND;
+    
+    return arcs[getIndex(a)][getIndex(b)].getDistance();
+  }
+  
   
   public static void main(String[] args){
     Map m = new Map();

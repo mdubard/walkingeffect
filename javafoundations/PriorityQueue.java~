@@ -10,11 +10,11 @@ import javafoundations.exceptions.*;
 
 public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
 {
- private LinkedMinHeap<T> heap;
+ private LinkedMaxHeap<T> heap;
  
  public PriorityQueue()
  {
-  heap = new LinkedMinHeap<T>();
+  heap = new LinkedMaxHeap<T>();
  }
  public void enqueue(T element)
  {
@@ -25,7 +25,7 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
  {
   try
   {
-   T temp = heap.removeMin();
+   T temp = heap.removeMax();
    return temp;
   }
   catch(EmptyCollectionException ece)
@@ -37,7 +37,7 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
  
  public T first()
  {
-  return heap.getMin();
+  return heap.getMax();
  }
  
  public boolean isEmpty()
@@ -53,18 +53,5 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
  public String toString()
  {
   return heap.toString();
- }
- 
- public static void main(String[] args){
-   PriorityQueue pq = new PriorityQueue();
-   pq.enqueue(5);
-   pq.enqueue(5);
-   pq.enqueue(6);
-   pq.enqueue(4);
-   pq.enqueue(1);
-   pq.enqueue(8);
-   pq.enqueue(3);
-   pq.dequeue();
-   System.out.println(pq);
  }
 }
