@@ -4,9 +4,9 @@
  * Known Bugs: none
  */
 
-public class Path implements Comparable<Path> {
-  //double time; //time in minutes needed to walk the path at normal rate 
-  int distance; //distance of path in feet (???)
+public class Path implements Comparable {
+  double time; //time in minutes needed to walk the path at normal rate 
+  double distance; //distance of path in feet (???)
   boolean hasStairs; boolean hasHills;
   
   
@@ -18,8 +18,8 @@ public class Path implements Comparable<Path> {
    * @param stairs  true if the path contains stairs
    * @param hill    true if the path is hilly
    */ 
-  public Path (int dist, boolean stairs, boolean hill){
-    //time = t;
+  public Path (double t, double dist, boolean stairs, boolean hill){
+    time = t;
     distance = dist;
     hasStairs = stairs;
     hasHills = hill;
@@ -31,7 +31,7 @@ public class Path implements Comparable<Path> {
    * 
    */ 
   private Path(){
-    //time = 0;
+    time = 0;
     distance = 0;
     hasStairs = false;
     hasHills = false;
@@ -45,8 +45,16 @@ public class Path implements Comparable<Path> {
    * @param that the Path to compare to this path
    * @return     the difference in walking times of the paths
    */ 
-  public int compareTo(Path that){
-    return this.getDistance() - that.getDistance();
+  public int compareTo(Object o){
+    Path that = new Path();
+    try{
+        that = (Path)o;
+          }
+      catch (ClassCastException e){
+        return Integer.MIN_VALUE;
+      }
+
+    return (Double.valueOf(this.getTime() - that.getTime())).intValue();
   }
    
   
@@ -56,25 +64,21 @@ public class Path implements Comparable<Path> {
    * @return
    */ 
   public String toString() {
-    return "Minutes: " + this.calculateTime() + "\tDistance: " + this.getDistance() + 
+    return "Minutes: " + this.getTime() + "\tDistance: " + this.getDistance() + 
       "\nAccessiblity: " +(this.hasStairs()?"Has Stairs" : "No Stairs") + "\t" +
       (this.hasHills()? "Has Hills" : "No Hills");
   }
   
-
+  /****Getter Methods****/
   
   /**
-   * Returns the time it takes to walk this path, calculated by distance
-   * average walking speed: 3.1 miles per hour  = 273 feet per minute
+   * Returns the time it takes to walk this path
    * 
    * @return    the time it takes to walk this path
    */ 
-  public double calculateTime(){
-    return distance/273;
+  public double getTime(){
+    return time;
   }
-  
-    
-  /****Getter Methods****/
   
     /**
    * Returns the distance of this path
@@ -82,7 +86,7 @@ public class Path implements Comparable<Path> {
    * @return    the distance of this path
    */ 
   
-  public int getDistance(){
+  public double getDistance(){
   return distance;
   }
   
@@ -108,12 +112,22 @@ public class Path implements Comparable<Path> {
   
   /****Setter Methods****/
   
+    /**
+   * Sets the time it takes to walk this path to the inputted double
+   * 
+   * @param  t    the time it takes to walk this path
+   */ 
+  
+  public void setTime(double t){
+    time = t;
+  }
+  
    /**
    * Sets the distance of this path to the inputted double
    * 
    * @param  d    the distance of this path
    */ 
-  public void setDistance(int d){
+  public void setDistance(double d){
     distance = d;
   }
   
