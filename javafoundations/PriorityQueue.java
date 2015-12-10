@@ -55,6 +55,30 @@ public class PriorityQueue<T extends Comparable<T>> implements Queue<T>
   return heap.toString();
  }
  
+  public void reorder(){
+    if (heap.getMin() == null)
+      throw new EmptyCollectionException ("Reorder operation " +
+                                          "failed. Tree is empty.");
+    
+    T holdRoot = null;
+    LinkedMinHeap<T> temp = new LinkedMinHeap<T>();
+    while(!heap.isEmpty()){
+      temp.add(heap.removeMin());
+    }
+    heap = temp;
+    /*
+    
+    do{
+      if(holdRoot != null){
+      holdRoot = heap.getMin();
+      temp.add(holdRoot);
+      heap.removeMin();
+      }
+    }while(holdRoot != null);
+    heap = temp;*/
+
+  }
+ 
  public static void main(String[] args){
    PriorityQueue pq = new PriorityQueue();
    pq.enqueue(5);

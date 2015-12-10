@@ -433,26 +433,46 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     PriorityQueue<Location> q = new PriorityQueue<Location>();
     int[] previous = new int[n]; //stores index of node visited before
     
-    for(Location L : vertices){
-      L.setDistance(INFINITY);
+    for(int i = 0; i < n; i++){
+      vertices[i].setDistance(INFINITY);
     }
     
     orig.setDistance(0);
     
+    
     for(int i = 0; i < n; i++){
       q.enqueue(vertices[i]);
+      previous[i] = -2;
     }
+    
+    previous[getIndex(orig)] = -1;
+    
+    System.out.println("Queue: " + q);
     
     while(!q.isEmpty()){
       Location temp = q.dequeue();
-      LinkedList<Location> babies = getSuccessors(temp);
-      while(babies.peek() != null){
-        Location baby = babies.remove();
-        double alt = temp.getDistance() + getDistanceBetween(temp, baby);
-        if(alt < baby.getDistance()){
-          baby.setDistance(alt);
-          previous[getIndex(baby)] = getIndex(temp);
-        }  
+      System.out.println("Temp: " + temp.getName());
+      if(temp != dest){
+        LinkedList<Location> babies = getSuccessors(temp);
+        System.out.println(temp.getName() + "'s Successors: " + babies);
+        while(babies.peek() != null){
+          Location baby = babies.remove();
+          //check if we got here from a
+          if(previous[getIndex(temp)] != getIndex(baby)){
+          System.out.println(temp + "'s child: " + baby);
+          System.out.println(temp + "'s distance: " + temp.getDistance());
+          double alt = temp.getDistance() + getDistanceBetween(temp, baby);
+          System.out.println("Distance from origin to " + baby + ": " + alt);
+          if(alt < baby.getDistance()){
+            baby.setDistance(alt);
+            previous[getIndex(baby)] = getIndex(temp);
+            System.out.println("baby index: " + getIndex(baby));
+            System.out.println("temp index: " + getIndex(temp));
+          
+          }  
+          q.reorder();
+          }
+        }
       }
     }
     
@@ -468,24 +488,67 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     return arcs[getIndex(a)][getIndex(b)].getDistance();
   }
   
+  public String directionsString(Location orig, Location dest){
+    int[] directions = getDirections(orig, dest);
+    LinkedStack<String> names = new LinkedStack<String>();
+    int temp = getIndex(dest);
+    while(temp!= -1){
+    names.push(getVertex(temp).getName());
+    temp = directions[temp];
+    }
+    String result = "";
+    while(!names.isEmpty()){
+    result+= names.pop() + "\t";
+    }
+    return result;
+    
+  }
+  
   
   public static void main(String[] args){
     Map m = new Map();
-    Location scienceCenter = new Location("Science Center");
-    //vertices[0] = scienceCenter;
-    m.addVertex(scienceCenter);
-    Location resQuad = new Location("Residential Quad");
-    //vertices[1] = resQuad;
-    m.addVertex(resQuad);
-    Location lulu = new Location("Lulu Capus Center");
-    //vertices[2] = lulu;
-    m.addVertex(lulu);
-    Path resQuad2lulu = new Path(3, 4, true, true);
-    m.addEdge(resQuad, lulu, resQuad2lulu);
+    /*
+     Location scienceCenter = new Location("Science Center");
+     //vertices[0] = scienceCenter;
+     m.addVertex(scienceCenter);
+     Location resQuad = new Location("Residential Quad");
+     //vertices[1] = resQuad;
+     m.addVertex(resQuad);
+     Location lulu = new Location("Lulu Capus Center");
+     //vertices[2] = lulu;
+     m.addVertex(lulu);
+     Path resQuad2lulu = new Path(3, 4, true, true);
+     m.addEdge(resQuad, lulu, resQuad2lulu);
+     
+     Path scienceCenter2resQuad = new Path(3, 4, true, true);
+     m.addEdge(scienceCenter, resQuad, scienceCenter2resQuad);
+     System.out.println(m);
+     */
     
-    Path scienceCenter2resQuad = new Path(3, 4, true, true);
-    m.addEdge(scienceCenter, resQuad, scienceCenter2resQuad);
-    System.out.println(m);
+    Location a = new Location("A");
+    Location b = new Location("B");
+    Location c = new Location("C");
+    Location d = new Location("D");
+    Location e = new Location("E");
+    
+    m.addVertex(a);
+    m.addVertex(b);
+    m.addVertex(c);
+    m.addVertex(d);
+    m.addVertex(e); 
+    
+    m.addEdge(a, b, new Path(1, 3, true, true));
+    m.addEdge(a, c, new Path(1, 1, true, true));
+    m.addEdge(b, d, new Path(1, 1, true, true));
+    m.addEdge(c, e, new Path(1, 5, true, true));
+    m.addEdge(d, e, new Path(1, 1, true, true));
+    
+    int[] test = m.getDirections(a, e);
+    for(int i = 0; i < test.length; i++){
+      System.out.print(test[i] + "|");
+    }
+    
+    System.out.println("\n" + m.directionsString(a, e));
   }
   
 }

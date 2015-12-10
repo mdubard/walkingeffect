@@ -63,7 +63,7 @@ public class Location implements Comparable<Location> {
    * @return   the String representation
    */ 
   public String toString(){
-    return name + "\n" + about + "\n" + picture;
+    return name; //+ "\n" + about + "\n" + picture;
   }
   
   /**
