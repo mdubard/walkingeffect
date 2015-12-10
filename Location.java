@@ -74,9 +74,9 @@ public class Location implements Comparable<Location> {
    */ 
   public int compareTo(Location that){
 
-      if(this.getTime() == that.getTime())
+      if(this.getDistance() == that.getDistance())
         return 0;
-      else if (this.getTime()<that.getTime())
+      else if (this.getDistance()<that.getDistance())
         return -1;
       else
         return 1;
@@ -98,7 +98,7 @@ public class Location implements Comparable<Location> {
   }
   
   public double getDistance(){
-  return distance
+  return distance;
   }
   
   /****Setter Methods****/
