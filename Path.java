@@ -1,14 +1,13 @@
 /* Class to represent a Path object
- * Author: Alyssa Rivera
  * Created: December 7th, 2015
  * Last Modified: December 7th, 2015
  * Known Bugs: none
  */
 
 public class Path implements Comparable {
-  private double time; //time in minutes needed to walk the path at normal rate 
-  private double distance; //distance of path in feet (???)
-  private boolean hasStairs; boolean hasHills;
+  double time; //time in minutes needed to walk the path at normal rate 
+  double distance; //distance of path in feet (???)
+  boolean hasStairs; boolean hasHills;
   
   
   /**
@@ -150,5 +149,9 @@ public class Path implements Comparable {
     hasHills = h;
   }
   
+  
+               
+
+
 
 }
