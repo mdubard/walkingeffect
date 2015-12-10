@@ -429,7 +429,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    * Returns directions for shortest path between a and b
    **/ 
   public String getDirections(Location orig, Location dest){
-    int[] tempDistances = new int[n];
+    double[] tempDistances = new double[n];
     Location[] previous = new Location[n];
     for(int i = 0; i < n; i++){
       tempDistances[i] = INFINITY;
