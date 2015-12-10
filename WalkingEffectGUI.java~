@@ -22,11 +22,14 @@ public class WalkingEffectGUI{
     //creates a tabbed pane
     JTabbedPane tp = new JTabbedPane();
     
+    //creates Map object
+    Map map = new Map();
+    
     //adds three tabs
-    HomePanel home = new HomePanel();
+    HomePanel home = new HomePanel(); //will pass map into home
     AddLocationPanel addLoc = new AddLocationPanel();
     ExplorePanel ep = new ExplorePanel();
-    tp.addTab("Home", home);
+    tp.addTab("Home", new JScrollPane(home));
     tp.addTab("Add Location", addLoc);
     tp.addTab("Explore", ep);
     

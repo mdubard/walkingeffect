@@ -1,3 +1,13 @@
+/* 
+ * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
+ * Writer for this Class: Hannah Murphy
+ * 
+ * File name: WalkingEffectGUI.java
+ * Date Created: 12/8/15
+ * Last Updated: 12/10/15
+ * 
+ * Class that creates the Walking Effect GUI
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
