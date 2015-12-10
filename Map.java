@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 
-public class Map extends AdjMatGraph{
+public class Map implements Graph<Location>{//, Iterator<Location>{
   
   private int n;   // number of vertices in the graph
   private Path[][] arcs;   // adjacency matrix of arcs
@@ -21,30 +21,33 @@ public class Map extends AdjMatGraph{
    * Makes a Map object with all of the pre-loaded Locations and Paths
    */ 
   public Map(){
-    Location scienceCenter = new Location();
-    vertices[1] = scienceCenter;
+    vertices = new Location[DEFAULT_CAPACITY];
+    arcs = new Path[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+    n = 0;
+    Location scienceCenter = new Location("Science Center");
+    //vertices[0] = scienceCenter;
+    addVertex(scienceCenter);
+    Location resQuad = new Location("Residential Quad");
+    //vertices[1] = resQuad;
+    addVertex(resQuad);
+    Location lulu = new Location("Lulu Capus Center");
+    //vertices[2] = lulu;
+    addVertex(lulu);
+    Path resQuad2lulu = new Path(3, 4, true, true);
+    addEdge(resQuad, lulu, resQuad2lulu);
     
-    Location resQuad = new Location();
-    vertices[2] = resQuad;
-    
-    Location lulu = new Location();
-    vertices[3] = lulu;
-    
-    Path resQuad2lulu = new Path(resQuad, lulu);
-    addEdge(resQuad2lulu);
-    
-    Path scienceCenter2resQuad = new Path(scienceCenter, resQuad);
-    addEdge(scienceCenter2resQuad);
+    Path scienceCenter2resQuad = new Path(3, 4, true, true);
+    addEdge(scienceCenter, resQuad, scienceCenter2resQuad);
   }
   
-  public void addEdge(Path newPath){
+  /*public void addEdge(Path newPath){
     int index1 = getIndex(newPath.getOrigin());
     int index2 = getIndex(newPath.getDestination());
     if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
       addArc(index1, index2, newPath);
       addArc(index2, index1, newPath);
     }
-  }
+  }*/
   
   /******************************************************************
     Inserts an arc from srcVertex to destVertex.
@@ -89,33 +92,47 @@ public class Map extends AdjMatGraph{
    addArc(index2, index1, edge);
   }
  }
+ 
+ public void addEdge(Location vertex1, Location vertex2) { //also add path parameters
+  int index1 = getIndex(vertex1);
+  int index2 = getIndex(vertex2);
+  if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
+    Path edge = new Path(NOT_FOUND, NOT_FOUND, false, false);
+   addArc(index1, index2, edge);
+   addArc(index2, index1, edge);
+  }
+ }
 
  /******************************************************************
     Inserts an arc from srcVertex to destVertex.
     If the vertices exist, else does not change the graph. 
   ******************************************************************/
- public void addArc(Location srcVertex, Location destVertex) { //add path variables
+ public void addArc(Location srcVertex, Location destVertex){//, Path edge) { //add path variables
   int src = getIndex(srcVertex);
   int dest = getIndex(destVertex);
   if (src != NOT_FOUND && dest != NOT_FOUND) {
-   addArc(src, dest);
+    Path edge = new Path(NOT_FOUND, NOT_FOUND, false, false);
+   addArc(src, dest, edge);
   }
  }
-
+ public boolean isUndirected(){
+   throw new UnsupportedOperationException();
+ 
+ }
  /******************************************************************
     Helper. Inserts an edge between two vertices of the graph.
     @throws IllegalArgumentException if either index is invalid.
   ******************************************************************/
- protected void addArc(int srcIndex, int destIndex, Path edge) { //add path variables
+ /*protected void addArc(int srcIndex, int destIndex, Path edge) { //add path variables
   if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
    throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
   }
   //Path p = new Path();//add variables
   arcs[srcIndex][destIndex] = edge;
- }
+ }*/
  @SuppressWarnings("unchecked")
  private void expandCapacity() {
-  Location[] largerVertices = (Location[])(new Object[vertices.length*2]);
+  Location[] largerVertices = new Location[vertices.length*2];
   Path[][] largerAdjMatrix = 
     new Path[vertices.length*2][vertices.length*2];
 
@@ -131,14 +148,14 @@ public class Map extends AdjMatGraph{
  }
  
  
- protected int getIndex(Location loc) {
+ /*protected int getIndex(Location loc) {
   for (int i = 0; i < n; i++) {
    if (vertices[i].equals(loc)) {
     return i;
    }
   }
   return NOT_FOUND;
- } 
+ }*/ 
  
 public void addVertex (Location vertex) {
   if (getIndex(vertex) != NOT_FOUND) return;
@@ -301,7 +318,7 @@ public boolean isEdge(Location srcVertex, Location destVertex) {
 
   if (v == NOT_FOUND) return neighbors;
   for (int i = 0; i < n; i++) {
-   if (arcs[i][v]) {
+   if (arcs[i][v] != null) {
     neighbors.add(getVertex(i)); // if T then add i to linked list
    }
   }    
@@ -319,7 +336,7 @@ public boolean isEdge(Location srcVertex, Location destVertex) {
 
   if (v == NOT_FOUND) return neighbors;
   for (int i = 0; i < n; i++) {
-   if (arcs[v][i]) {
+   if (arcs[v][i] != null) {
     neighbors.add(getVertex(i)); // if T then add i to linked list
    }
   }    
@@ -366,6 +383,7 @@ public boolean isEdge(Location srcVertex, Location destVertex) {
  }
 
  public Map getDirections(){
+   return new Map();
  }
  
  
@@ -402,6 +420,15 @@ public boolean isEdge(Location srcVertex, Location destVertex) {
   }
 
   return result;
+ }
+ 
+ public void saveTGF(String tgf_file_name){
+   throw new UnsupportedOperationException();
+ }
+ 
+ public static void main(String[] args){
+   Map m = new Map();
+   System.out.println(m);
  }
 
 }
