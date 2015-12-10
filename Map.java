@@ -1,13 +1,3 @@
-/* 
- * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
- * Writer for this Class: Hannah Murphy
- * 
- * File name: WalkingEffectGUI.java
- * Date Created: 12/8/15
- * Last Updated: 12/10/15
- * 
- * Class that creates the Walking Effect GUI
- */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,6 +38,10 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     
     Path scienceCenter2resQuad = new Path(3, 4, true, true);
     addEdge(scienceCenter, resQuad, scienceCenter2resQuad);
+  }
+  
+  public Location[] getLocations(){
+    return vertices;
   }
   
   /*public void addEdge(Path newPath){
