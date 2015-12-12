@@ -2,12 +2,13 @@
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
  * Writer for this Class: Hannah Murphy
  * 
- * File name: WalkingEffectGUI.java
+ * File name: Map.java
  * Date Created: 12/8/15
- * Last Updated: 12/10/15
+ * Last Updated: 12/12/15
  * 
- * Class that creates the Walking Effect GUI
+ * Creates an instance of a Map Object, which provides the finctionality for the map represented in WalkingEffectGUI.java
  */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,34 +23,191 @@ import javafoundations.*;
 
 public class Map implements Graph<Location>{//, Iterator<Location>{
   
-  private int n;   // number of vertices in the graph
-  private Path[][] arcs;   // adjacency matrix of arcs
-  private Location[] vertices; 
+  private int n;   // number of locations in the graph
+  private Path[][] paths;   // adjacency matrix of arcs
+  private Location[] locations; 
   public static final int NOT_FOUND = -1;
   private static final int DEFAULT_CAPACITY = 1;
   private final int INFINITY = 1000000;
   
-  /* Constructor
-   * Makes a Map object with all of the pre-loaded Locations and Paths
-   */ 
+  /******************************************************************* 
+    Map()
+    
+    Constructor
+    Makes an empty Map object
+    Sets n (number of locations) to 0
+   ******************************************************************/ 
   public Map(){
-    vertices = new Location[DEFAULT_CAPACITY];
-    arcs = new Path[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
+    locations = new Location[DEFAULT_CAPACITY];
+    paths = new Path[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
     n = 0;
   }
   
-  /*public void addEdge(Path newPath){
-   int index1 = getIndex(newPath.getOrigin());
-   int index2 = getIndex(newPath.getDestination());
-   if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
-   addArc(index1, index2, newPath);
-   addArc(index2, index1, newPath);
-   }
-   }*/
+  
+  /////////////////VERTEX/LOCATION RELATED METHODS////////////////////////
+  /******************************************************************
+    addVertex()
+    
+    Adds a given Location to the Map, if there is not enough room in locations[], expand the capacity
+    ******************************************************************/
+  public void addVertex (Location vertex) {
+    if (getIndex(vertex) != NOT_FOUND) return;
+    if (n == locations.length) {
+      expandCapacity();
+    }
+    
+    locations[n] = vertex;
+    for (int i = 0; i <= n; i++) {
+      paths[n][i] = null;
+      paths[i][n] = null;
+    }      
+    n++;
+  }
   
   /******************************************************************
+   getLocations()
+   
+   returns string array of all Location names
+   Used to populate the Map Key text fields in the application GUI
+   ******************************************************************/
+  public String[] getLocations(){
+    String[] locs = new String[n];
+    for(int i = 0; i < n; i++){
+      locs[i] = locations[i].getName();
+    }
+    return locs;
+  }
+  
+  /******************************************************************
+   getAllVertices()
+   
+   returns the array of Locations in the Map
+   ******************************************************************/
+  public Location[] getAllVertices(){
+    return locations;
+  }
+  
+  /******************************************************************
+   findLocation()
+   
+   Given the name of the location, return the corresponfding Location Object
+   ******************************************************************/
+  public Location findLocation(String loc){
+    for(int i = 0; i < n; i++){
+      if(locations[i].getName().equalsIgnoreCase(loc))
+        return locations[i];
+    }
+    return null;
+  }
+  /******************************************************************
+    containsVertex()
+    
+    returns true if the map contains the passed vertex.
+    ******************************************************************/
+  public boolean containsVertex(Location vertex) {
+    return getIndex(vertex) != NOT_FOUND;
+  }
+  
+  
+  /******************************************************************
+    getVertex()
+    
+    returns the vertex at the given index in vertices. 
+    trhows exception is index is not valid
+    ******************************************************************/
+  protected Location getVertex(int v) {
+    if (!indexIsValid(v)) {
+      throw new IllegalArgumentException("No such vertex index: " + v);
+    }
+    return locations[v]; 
+  }
+  
+  /******************************************************************
+    removeVertex()
+    
+    removes the passed vertex from the map by getting the index of the vertex 
+    and passing it to removeVertex(int)
+    does nothing if vertex is not in map
+    LOCATION PARAMETER
+    ******************************************************************/
+   public void removeVertex (Location vertex) {
+    int index = getIndex(vertex);
+    if (index != NOT_FOUND) {
+      removeVertex(index);
+    }
+  } 
+   
+   /******************************************************************
+    removeVertex()
+    
+    removes the location at the given index from the map. updates adjacency matrix (paths)
+    to remove the spaces allotted for the removed vertex
+    throws excepton if index is not valid
+    INDEX(INTEGER) PARAMTER
+    ******************************************************************/
+  protected void removeVertex (int index) {
+    if (!indexIsValid(index)) {
+      throw new IllegalArgumentException("No such vertex index");
+    }
+    n--;
+    
+    // Remove vertex.
+    for (int i = index; i < n; i++) {
+      locations[i] = locations[i+1];
+    }
+    
+    // Move rows up.
+    for (int i = index; i < n; i++) {
+      for (int j = 0; j <= n; j++) {
+        paths[i][j] = paths[i+1][j];
+      }
+    }
+    
+    // Move columns left
+    for (int i = index; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        paths[j][i] = paths[j][i+1];
+      }
+    }
+    
+    // Erase last row and last column
+    for (int a = 0; a < n; a++) {
+      paths[n][a] = null;
+      paths[a][n] = null;
+    }
+  }
+  
+  /******************************************************************
+    expandCapacity()
+    
+    Helper Method - copies locations[] and paths[][] into larger arrays
+    Called when there is no more space to add more vertices
+    ******************************************************************/
+  @SuppressWarnings("unchecked")
+  private void expandCapacity() {
+    Location[] largerVertices = new Location[locations.length*2];
+    Path[][] largerAdjMatrix = 
+      new Path[locations.length*2][locations.length*2];
+    
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        largerAdjMatrix[i][j] = paths[i][j];
+      }
+      largerVertices[i] = locations[i];
+    }
+    
+    locations = largerVertices;
+    paths = largerAdjMatrix;
+  }
+  
+  
+  //////////////////////ARC/PATH RELATED METHODS///////////////////////
+  /******************************************************************
+    addArc()
+    
     Inserts an arc from srcVertex to destVertex.
     If the vertices exist, else does not change the graph. 
+    LOCATION PARAMETERS
     ******************************************************************/
   public void addArc(Location srcVertex, Location destVertex, Path newPath) {
     int src = getIndex(srcVertex);
@@ -60,27 +218,25 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   }
   
   /******************************************************************
+    addArc()
+    
     Helper. Inserts an edge between two vertices of the graph.
     @throws IllegalArgumentException if either index is invalid.
+    INTEGER (INDEX) PARAMETERS
     ******************************************************************/
   protected void addArc(int srcIndex, int destIndex, Path newPath) {
     if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
       throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
     }
-    arcs[srcIndex][destIndex] = newPath;
+    paths[srcIndex][destIndex] = newPath;
   }
   
-  protected int getIndex(Location loc) {
-    for (int i = 0; i < n; i++) {
-      if (vertices[i].equals(loc)) {
-        return i;
-      }
-    }
-    return NOT_FOUND;
-  }
   /******************************************************************
+    addEdge()
+    
     Inserts an edge between two vertices of the graph.
     If one or both vertices do not exist, ignores the addition.
+    LOCATION PARAMETERS
     ******************************************************************/
   public void addEdge(Location vertex1, Location vertex2, Path edge) { //also add path parameters
     int index1 = getIndex(vertex1);
@@ -90,6 +246,12 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       addArc(index2, index1, edge);
     }
   }
+  
+  /*****************************************************************
+    addEdge()
+    
+    Not used - only fulfills requirement in Graph interface
+    ***************************************************************/
   
   public void addEdge(Location vertex1, Location vertex2) { //also add path parameters
     int index1 = getIndex(vertex1);
@@ -102,8 +264,9 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   }
   
   /******************************************************************
-    Inserts an arc from srcVertex to destVertex.
-    If the vertices exist, else does not change the graph. 
+    addArc()
+    
+    Not used - only fulfills requirement in Graph interface
     ******************************************************************/
   public void addArc(Location srcVertex, Location destVertex){//, Path edge) { //add path variables
     int src = getIndex(srcVertex);
@@ -113,95 +276,170 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       addArc(src, dest, edge);
     }
   }
-  public boolean isUndirected(){
-    throw new UnsupportedOperationException();
-    
-  }
+  
   /******************************************************************
-    Helper. Inserts an edge between two vertices of the graph.
-    @throws IllegalArgumentException if either index is invalid.
+    isArc()
+    
+    returns true if a path exists between the two passed locations
+    LOCATION PARAMETERS
     ******************************************************************/
-  /*protected void addArc(int srcIndex, int destIndex, Path edge) { //add path variables
-   if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
-   throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
-   }
-   //Path p = new Path();//add variables
-   arcs[srcIndex][destIndex] = edge;
-   }*/
-  @SuppressWarnings("unchecked")
-  private void expandCapacity() {
-    Location[] largerVertices = new Location[vertices.length*2];
-    Path[][] largerAdjMatrix = 
-      new Path[vertices.length*2][vertices.length*2];
-    
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        largerAdjMatrix[i][j] = arcs[i][j];
-      }
-      largerVertices[i] = vertices[i];
-    }
-    
-    vertices = largerVertices;
-    arcs = largerAdjMatrix;
-  }
-  
-  
-  /*protected int getIndex(Location loc) {
-   for (int i = 0; i < n; i++) {
-   if (vertices[i].equals(loc)) {
-   return i;
-   }
-   }
-   return NOT_FOUND;
-   }*/ 
-  
-  public void addVertex (Location vertex) {
-    if (getIndex(vertex) != NOT_FOUND) return;
-    if (n == vertices.length) {
-      expandCapacity();
-    }
-    
-    vertices[n] = vertex;
-    for (int i = 0; i <= n; i++) {
-//   if (arcs[n][i] || arcs[i][n]) throw new RuntimeException("Corrupted AdjacencyMatrix");
-      arcs[n][i] = null;
-      arcs[i][n] = null;
-    }      
-    n++;
-  }
-  
-  public boolean isArc(Location srcVertex, Location destVertex) {
+   public boolean isArc(Location srcVertex, Location destVertex) {
     int src = getIndex(srcVertex);
     int dest = getIndex(destVertex);
-    return src != NOT_FOUND && dest != NOT_FOUND && arcs[src][dest] != null;
+    return src != NOT_FOUND && dest != NOT_FOUND && paths[src][dest] != null;
+  }
+   
+   /******************************************************************
+    isArc()
+    
+    returns true if a path exists between the two passed locations
+    INDEX (INTEGER) PARAMETERS
+    ******************************************************************/
+  protected boolean isArc(int srcIndex, int destIndex) {
+    if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
+      throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
+    }
+    return paths[srcIndex][destIndex] != null;
   }
   
+   /******************************************************************
+    isEdge()
+    
+    returns true if a path exists between the two passed locations (both ways)
+    LOCATION PARAMETERS
+    ******************************************************************/
+  public boolean isEdge(Location srcVertex, Location destVertex) {
+    int src = getIndex(srcVertex);
+    int dest = getIndex(destVertex);
+    return src != NOT_FOUND && dest != NOT_FOUND && isArc(src, dest) && isArc(dest, src);
+  }
+  
+  
+  /******************************************************************
+    removeEdge() 
+    
+    Removes an edge (both arcs) from vertex src to vertex dest,
+    if the vertices exist, else does not change the graph. 
+    LOCATION PARAMETERS
+    ******************************************************************/
+  public void removeEdge(Location vertex1, Location vertex2) {
+    int index1 = getIndex(vertex1);
+    int index2 = getIndex(vertex2);
+    if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
+      removeArc(index1, index2);
+      removeArc(index2, index1);
+    }
+  }
+  
+  
+  /******************************************************************
+    removeArc() 
+    
+    Removes an arc from vertex src to vertex dest,
+    if the vertices exist, else does not change the graph. 
+    LOCATION PARAMETERS
+    ******************************************************************/
+  public void removeArc(Location srcVertex, Location destVertex) {
+    int src = getIndex(srcVertex);
+    int dest = getIndex(destVertex);
+    if (src != NOT_FOUND && dest != NOT_FOUND) {
+      removeArc(src, dest);
+    }
+  }
+  
+  /******************************************************************
+    removeArc()
+    
+    Helper. Removes an arc from index v1 to index v2.
+    @throws IllegalArgumentException if either index is invalid.
+    INDEX (INTEGER) PARAMETERS
+    ******************************************************************/
+  protected void removeArc(int srcIndex, int destIndex) {
+    if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
+      throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
+    }
+    paths[srcIndex][destIndex] = null;
+  }
+  
+  //////////////////////////GRAPH FUNCTIONS/////////////////////////
+  
+  /*****************************************************************
+    isEmpty()
+    
+    returns true if the Map is empty (has no locations)
+    ***************************************************************/
   public boolean isEmpty() {
     return n == 0;
   }
   
+  /*****************************************************************
+    getIndex()
+    
+    returns the index in locations[] of the given location
+    returns NOT_FOUND if location is not in the graph
+    ***************************************************************/
+  protected int getIndex(Location loc) {
+    for (int i = 0; i < n; i++) {
+      if (locations[i].equals(loc)) {
+        return i;
+      }
+    }
+    return NOT_FOUND;
+  }
+  
   /******************************************************************
-    Returns the number of vertices in the graph.
+    indexIsValid()
+    
+    returns true if there should be a location object at the given index
+    ******************************************************************/
+  protected boolean indexIsValid(int index) {
+    return index < n && index >= 0;  
+  } 
+  
+  /******************************************************************
+    isUndirected()
+    
+    Not used - only fulfills requirement in Graph interface
+    ******************************************************************/
+  public boolean isUndirected(){
+    throw new UnsupportedOperationException();
+    
+  }
+  
+  /******************************************************************
+    n()
+    
+    Returns the number of locations in the graph (n).
     ******************************************************************/
   public int n() {
     return n;
   }
   
   /******************************************************************
-    Returns the number of arcs in the graph by counting them.
+    m()
+    
+    Returns the number of paths in the map by counting them.
     ******************************************************************/
   public int m() {
     int total = 0;
     
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        if (arcs[i][j] != null) {
+        if (paths[i][j] != null) {
           total++;
         }
       }
     }
     return total; 
   }
+  
+  ////////////////////////ITERATOR/////////////////////////////
+  
+  /******************************************************************
+    VerticesIterator
+    
+    Provides an iterator to run through the locations in a map
+    ******************************************************************/
   private class VerticesIterator implements Iterator<Location> {
     private int cursor = 0;
     
@@ -215,7 +453,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       if (cursor >= n) {
         throw new NoSuchElementException();
       } else {
-        return vertices[cursor++];
+        return locations[cursor++];
       }
     }
     
@@ -225,89 +463,23 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     } 
   }
   
-  /**
-   * Create a new iterator that will iterate over the vertices of the array when asked.
-   * @return the new iterator.
-   */
+  /******************************************************************
+    iterator()
+    
+    creates and returns a new VerticesIterator
+    ******************************************************************/
   public Iterator<Location> iterator() {
     return new VerticesIterator();
   }
   
-  /**
-   * Check if the graph contains the given vertex.
-   */
-  public boolean containsVertex(Location vertex) {
-    return getIndex(vertex) != NOT_FOUND;
-  }
   
+  ///////////////////////GETTERS OF LOCATIONS////////////////////////////////
   
   /******************************************************************
-    Returns true iff an arc exists between two given indices. 
-    @throws IllegalArgumentException if either index is invalid.
-    ******************************************************************/
-  protected boolean isArc(int srcIndex, int destIndex) {
-    if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
-      throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
-    }
-    return arcs[srcIndex][destIndex] != null;
-  }
-  
-  public boolean isEdge(Location srcVertex, Location destVertex) {
-    int src = getIndex(srcVertex);
-    int dest = getIndex(destVertex);
-    return src != NOT_FOUND && dest != NOT_FOUND && isArc(src, dest) && isArc(dest, src);
-  }
-  
-  public void removeVertex (Location vertex) {
-    int index = getIndex(vertex);
-    if (index != NOT_FOUND) {
-      removeVertex(index);
-    }
-  } 
-  /******************************************************************
-    Returns the vertex object that is at a certain index
-    ******************************************************************/
-  protected Location getVertex(int v) {
-    if (!indexIsValid(v)) {
-      throw new IllegalArgumentException("No such vertex index: " + v);
-    }
-    return vertices[v]; 
-  }
-  
-  protected void removeVertex (int index) {
-    if (!indexIsValid(index)) {
-      throw new IllegalArgumentException("No such vertex index");
-    }
-    n--;
+    getPredecessors()
     
-    // Remove vertex.
-    for (int i = index; i < n; i++) {
-      vertices[i] = vertices[i+1];
-    }
-    
-    // Move rows up.
-    for (int i = index; i < n; i++) {
-      for (int j = 0; j <= n; j++) {
-        arcs[i][j] = arcs[i+1][j];
-      }
-    }
-    
-    // Move columns left
-    for (int i = index; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        arcs[j][i] = arcs[j][i+1];
-      }
-    }
-    
-    // Erase last row and last column
-    for (int a = 0; a < n; a++) {
-      arcs[n][a] = null;
-      arcs[a][n] = null;
-    }
-  }
-  /******************************************************************
     Retrieve from a graph the vertices x pointing to vertex v (x->v)
-    and returns them onto a linked list
+    and returns them onto a linked list. Returns emptylist if there are no predecessors
     ******************************************************************/
   public LinkedList<Location> getPredecessors(Location loc) {
     LinkedList<Location> neighbors = new LinkedList<Location>();
@@ -316,7 +488,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     
     if (v == NOT_FOUND) return neighbors;
     for (int i = 0; i < n; i++) {
-      if (arcs[i][v] != null) {
+      if (paths[i][v] != null) {
         neighbors.add(getVertex(i)); // if T then add i to linked list
       }
     }    
@@ -324,8 +496,10 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   }
   
   /******************************************************************
-    * Retrieve from a graph the vertices x following vertex v (v->x)
-    and returns them onto a linked list
+    getSuccessors()
+    
+    Retrieve from a graph the vertices x following vertex v (v->x)
+    and returns them onto a linked list. Returns empty list if there are no successors
     ******************************************************************/
   public LinkedList<Location> getSuccessors(Location loc){
     LinkedList<Location> neighbors = new LinkedList<Location>();
@@ -334,57 +508,131 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     
     if (v == NOT_FOUND) return neighbors;
     for (int i = 0; i < n; i++) {
-      if (arcs[v][i] != null) {
+      if (paths[v][i] != null) {
         neighbors.add(getVertex(i)); // if T then add i to linked list
       }
     }    
     return neighbors;    
   }
   
-  /******************************************************************
-    Returns true if the given index is valid. 
-    ******************************************************************/
-  protected boolean indexIsValid(int index) {
-    return index < n && index >= 0;  
-  } 
-  public void removeEdge(Location vertex1, Location vertex2) {
-    int index1 = getIndex(vertex1);
-    int index2 = getIndex(vertex2);
-    if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
-      removeArc(index1, index2);
-      removeArc(index2, index1);
-    }
-  }
-  
+  /////////////////////GETDIRECTIONS AND RELATED METHODS//////////////////////
   
   /******************************************************************
-    Removes an arc from vertex src to vertex dest,
-    if the vertices exist, else does not change the graph. 
-    ******************************************************************/
-  public void removeArc(Location srcVertex, Location destVertex) {
-    int src = getIndex(srcVertex);
-    int dest = getIndex(destVertex);
-    if (src != NOT_FOUND && dest != NOT_FOUND) {
-      removeArc(src, dest);
+   getDirections()
+   
+   Returns an integer matrix that provides directions for shortest path between Location a and Location b by implementing Dijktra's algorithm.
+   Integers in array represent Locations in locations array that were visited to get the shortest route.
+   ******************************************************************/
+  public int[] getDirections(Location orig, Location dest){
+    //double[] tempDistances = new double[n]; //array to store calculated shortest distance to node from origin
+    PriorityQueue<Location> q = new PriorityQueue<Location>(); //a priority queue that prioritizes by distance from origin
+    int[] previous = new int[n]; //stores index of node visited before each node ie if previous[3] = 1, then we traveled from node 1 to node 3
+    
+    for(int i = 0; i < n; i++){
+      locations[i].setDistance(INFINITY); //sets shortest distance from orig to node as infinity
     }
+    
+    orig.setDistance(0); //sets distance from origin to itself as 0
+    
+    
+    for(int i = 0; i < n; i++){
+      q.enqueue(locations[i]); //adds all vertices to the queue
+      previous[i] = -2; //sets previous to default of -2
+    }
+    
+    previous[getIndex(orig)] = -1; //sets previous of origin to -1
+    
+    //System.out.println("Queue: " + q); //testing
+    
+    while(!q.isEmpty()){
+      Location temp = q.dequeue();
+      
+      //System.out.println("Temp: " + temp.getName()); //testing
+      
+      if(temp != dest){ //if temp isn't destination
+        LinkedList<Location> babies = getSuccessors(temp); //get successors of temp
+        
+        //System.out.println(temp.getName() + "'s Successors: " + babies); //testing
+        
+        while(babies.peek() != null){ //while there are successors of temp
+          Location baby = babies.remove();
+          //check if we got here from the parent; ie we're traveling backwards
+          if(previous[getIndex(temp)] != getIndex(baby)){
+            
+            double alt = temp.getDistance() + getDistanceBetween(temp, baby); //find the distance traveled to baby from origin
+            
+            //System.out.println("Distance from origin to " + baby + ": " + alt); //testing
+            
+            if(alt < baby.getDistance()){ //if this distance from origin is smaller than previous distance from origin
+              baby.setDistance(alt); //set distance to new distance
+              previous[getIndex(baby)] = getIndex(temp); //say which node we traveled from
+              
+              //System.out.println("baby index: " + getIndex(baby)); //testing
+              //System.out.println("temp index: " + getIndex(temp)); //testing
+            }
+            if(!q.isEmpty())
+              q.reorder(); //reorder queue after new distance changes
+          }
+        }
+      }
+    }
+    return previous; //return array of previous indexes
   }
   
   /******************************************************************
-    Helper. Removes an arc from index v1 to index v2.
-    @throws IllegalArgumentException if either index is invalid.
-    ******************************************************************/
-  protected void removeArc(int srcIndex, int destIndex) {
-    if (!indexIsValid(srcIndex) || !indexIsValid(destIndex)) {
-      throw new IllegalArgumentException("One or more invalid indices: " + srcIndex + ", " + destIndex);
+   getDistanceBetween()
+   
+   If location a is a successor of location b(there is a direct path between the two), returns the distance between the two locations
+   ******************************************************************/
+  private double getDistanceBetween(Location a, Location b){
+    //if b is a successor of a
+    LinkedList successors = getSuccessors(a);
+    if(!successors.contains(b))
+      return NOT_FOUND;
+    
+    return paths[getIndex(a)][getIndex(b)].getDistance();
+  }
+  
+  /******************************************************************
+   directionsString()
+   
+   Returns a string representation of the directions from one location to another.
+   Calls getDirections() to get the integer representaion, then retrieves the names of the locaions
+   ******************************************************************/
+  public String directionsString(Location orig, Location dest){
+    int[] directions = getDirections(orig, dest);
+    LinkedStack<String> names = new LinkedStack<String>();
+    int temp = getIndex(dest);
+    while(temp!= -1){
+      names.push(getVertex(temp).getName());
+      temp = directions[temp];
     }
-    arcs[srcIndex][destIndex] = null;
+    String result = "";
+    while(!names.isEmpty()){
+      result+= names.pop() + "\t";
+    }
+    return result;
   }
   
-  public Map getDirections(){
-    return new Map();
+  
+  ////////////////////UNSUPPORTED METHODS///////////////////////
+  
+  /******************************************************************
+   saveTGF()
+   
+   Not used - only fulfills requirement in Graph interface
+   ******************************************************************/
+  public void saveTGF(String tgf_file_name){
+    throw new UnsupportedOperationException();
   }
   
   
+  //////////////////////////TOSTRING///////////////////////////////
+  /******************************************************************
+   toString()
+   
+  Returns a string representation of the graph
+   ******************************************************************/
   public String toString() {
     if (n == 0) {
       return "Graph is empty";
@@ -408,7 +656,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       result += "" + getVertex(i) + " ";
       
       for (int j = 0; j < n; j++) {
-        if (arcs[i][j] != null) {
+        if (paths[i][j] != null) {
           result += "1 ";
         } else {
           result += "- "; //just empty space
@@ -420,137 +668,12 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     return result;
   }
   
-  public void saveTGF(String tgf_file_name){
-    throw new UnsupportedOperationException();
-  }
-  
-  /**
-   * getDirections(Location a, Location b)
-   * Returns directions for shortest path between a and b
-   **/ 
-  public int[] getDirections(Location orig, Location dest){
-    //double[] tempDistances = new double[n]; //array to store calculated shortest distance to node from origin
-    PriorityQueue<Location> q = new PriorityQueue<Location>(); //a priority queue that prioritizes by distance from origin
-    int[] previous = new int[n]; //stores index of node visited before each node ie if previous[3] = 1, then we traveled from node 1 to node 3
-    
-    for(int i = 0; i < n; i++){
-      vertices[i].setDistance(INFINITY); //sets shortest distance from orig to node as infinity
-    }
-    
-    orig.setDistance(0); //sets distance from origin to itself as 0
-    
-    
-    for(int i = 0; i < n; i++){
-      q.enqueue(vertices[i]); //adds all vertices to the queue
-      previous[i] = -2; //sets previous to default of -2
-    }
-    
-    previous[getIndex(orig)] = -1; //sets previous of origin to -1
-    
-    //System.out.println("Queue: " + q); //testing
-    
-    while(!q.isEmpty()){
-      Location temp = q.dequeue();
-      
-      //System.out.println("Temp: " + temp.getName()); //testing
-      
-      if(temp != dest){ //if temp isn't destination
-        LinkedList<Location> babies = getSuccessors(temp); //get successors of temp
-        
-        //System.out.println(temp.getName() + "'s Successors: " + babies); //testing
-        
-        while(babies.peek() != null){ //while there are successors of temp
-          Location baby = babies.remove();
-          //check if we got here from the parent; ie we're traveling backwards
-          if(previous[getIndex(temp)] != getIndex(baby)){
-            
-            //System.out.println(temp + "'s child: " + baby); //testing
-            //System.out.println(temp + "'s distance: " + temp.getDistance()); //testing
-            
-            double alt = temp.getDistance() + getDistanceBetween(temp, baby); //find the distance traveled to baby from origin
-            
-            //System.out.println("Distance from origin to " + baby + ": " + alt); //testing
-            
-            if(alt < baby.getDistance()){ //if this distance from origin is smaller than previous distance from origin
-              baby.setDistance(alt); //set distance to new distance
-              previous[getIndex(baby)] = getIndex(temp); //say which node we traveled from
-              
-              //System.out.println("baby index: " + getIndex(baby)); //testing
-              //System.out.println("temp index: " + getIndex(temp)); //testing
-            }
-            if(!q.isEmpty())
-              q.reorder(); //reorder queue after new distance changes
-          }
-        }
-      }
-    }
-    return previous; //return array of previous indexes
-  }
-  
-  private double getDistanceBetween(Location a, Location b){
-    //if b is a successor of a
-    LinkedList successors = getSuccessors(a);
-    if(!successors.contains(b))
-      return NOT_FOUND;
-    
-    return arcs[getIndex(a)][getIndex(b)].getDistance();
-  }
-  
-  public String directionsString(Location orig, Location dest){
-    int[] directions = getDirections(orig, dest);
-    LinkedStack<String> names = new LinkedStack<String>();
-    int temp = getIndex(dest);
-    while(temp!= -1){
-      names.push(getVertex(temp).getName());
-      temp = directions[temp];
-    }
-    String result = "";
-    while(!names.isEmpty()){
-      result+= names.pop() + "\t";
-    }
-    return result;
-    
-  }
-  
-  public String[] getLocations(){
-    String[] locs = new String[n];
-    for(int i = 0; i < n; i++){
-      locs[i] = vertices[i].getName();
-    }
-    return locs;
-  }
-  
-  public Location[] getAllVertices(){
-    return vertices;
-  }
-  
-  public Location findLocation(String loc){
-    for(int i = 0; i < n; i++){
-      if(vertices[i].getName().equalsIgnoreCase(loc))
-        return vertices[i];
-    }
-    return null;
-  }
-  
+  /******************************************************************
+   testing
+   
+   ******************************************************************/
   public static void main(String[] args){
     Map m = new Map();
-    /*
-     Location scienceCenter = new Location("Science Center");
-     //vertices[0] = scienceCenter;
-     m.addVertex(scienceCenter);
-     Location resQuad = new Location("Residential Quad");
-     //vertices[1] = resQuad;
-     m.addVertex(resQuad);
-     Location lulu = new Location("Lulu Capus Center");
-     //vertices[2] = lulu;
-     m.addVertex(lulu);
-     Path resQuad2lulu = new Path(3, 4, true, true);
-     m.addEdge(resQuad, lulu, resQuad2lulu);
-     
-     Path scienceCenter2resQuad = new Path(3, 4, true, true);
-     m.addEdge(scienceCenter, resQuad, scienceCenter2resQuad);
-     System.out.println(m);
-     */
     
     Location a = new Location("A");
     Location b = new Location("B");

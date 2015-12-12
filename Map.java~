@@ -477,8 +477,9 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
               
               //System.out.println("baby index: " + getIndex(baby)); //testing
               //System.out.println("temp index: " + getIndex(temp)); //testing
-            }  
-            q.reorder(); //reorder queue after new distance changes
+            }
+            if(!q.isEmpty())
+              q.reorder(); //reorder queue after new distance changes
           }
         }
       }
