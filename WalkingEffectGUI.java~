@@ -4,7 +4,7 @@
  * 
  * File name: WalkingEffectGUI.java
  * Date Created: 12/8/15
- * Last Updated: 12/8/15
+ * Last Updated: 12/10/15
  * 
  * Class that creates the Walking Effect GUI
  */

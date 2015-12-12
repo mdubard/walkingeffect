@@ -429,54 +429,61 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    * Returns directions for shortest path between a and b
    **/ 
   public int[] getDirections(Location orig, Location dest){
-    double[] tempDistances = new double[n];
-    PriorityQueue<Location> q = new PriorityQueue<Location>();
-    int[] previous = new int[n]; //stores index of node visited before
+    //double[] tempDistances = new double[n]; //array to store calculated shortest distance to node from origin
+    PriorityQueue<Location> q = new PriorityQueue<Location>(); //a priority queue that prioritizes by distance from origin
+    int[] previous = new int[n]; //stores index of node visited before each node ie if previous[3] = 1, then we traveled from node 1 to node 3
     
     for(int i = 0; i < n; i++){
-      vertices[i].setDistance(INFINITY);
+      vertices[i].setDistance(INFINITY); //sets shortest distance from orig to node as infinity
     }
     
-    orig.setDistance(0);
+    orig.setDistance(0); //sets distance from origin to itself as 0
     
     
     for(int i = 0; i < n; i++){
-      q.enqueue(vertices[i]);
-      previous[i] = -2;
+      q.enqueue(vertices[i]); //adds all vertices to the queue
+      previous[i] = -2; //sets previous to default of -2
     }
     
-    previous[getIndex(orig)] = -1;
+    previous[getIndex(orig)] = -1; //sets previous of origin to -1
     
-    System.out.println("Queue: " + q);
+    //System.out.println("Queue: " + q); //testing
     
     while(!q.isEmpty()){
       Location temp = q.dequeue();
-      System.out.println("Temp: " + temp.getName());
-      if(temp != dest){
-        LinkedList<Location> babies = getSuccessors(temp);
-        System.out.println(temp.getName() + "'s Successors: " + babies);
-        while(babies.peek() != null){
+      
+      //System.out.println("Temp: " + temp.getName()); //testing
+      
+      if(temp != dest){ //if temp isn't destination
+        LinkedList<Location> babies = getSuccessors(temp); //get successors of temp
+        
+        //System.out.println(temp.getName() + "'s Successors: " + babies); //testing
+        
+        while(babies.peek() != null){ //while there are successors of temp
           Location baby = babies.remove();
-          //check if we got here from a
+          //check if we got here from the parent; ie we're traveling backwards
           if(previous[getIndex(temp)] != getIndex(baby)){
-          System.out.println(temp + "'s child: " + baby);
-          System.out.println(temp + "'s distance: " + temp.getDistance());
-          double alt = temp.getDistance() + getDistanceBetween(temp, baby);
-          System.out.println("Distance from origin to " + baby + ": " + alt);
-          if(alt < baby.getDistance()){
-            baby.setDistance(alt);
-            previous[getIndex(baby)] = getIndex(temp);
-            System.out.println("baby index: " + getIndex(baby));
-            System.out.println("temp index: " + getIndex(temp));
-          
-          }  
-          q.reorder();
+            
+            //System.out.println(temp + "'s child: " + baby); //testing
+            //System.out.println(temp + "'s distance: " + temp.getDistance()); //testing
+            
+            double alt = temp.getDistance() + getDistanceBetween(temp, baby); //find the distance traveled to baby from origin
+            
+            //System.out.println("Distance from origin to " + baby + ": " + alt); //testing
+            
+            if(alt < baby.getDistance()){ //if this distance from origin is smaller than previous distance from origin
+              baby.setDistance(alt); //set distance to new distance
+              previous[getIndex(baby)] = getIndex(temp); //say which node we traveled from
+              
+              //System.out.println("baby index: " + getIndex(baby)); //testing
+              //System.out.println("temp index: " + getIndex(temp)); //testing
+            }  
+            q.reorder(); //reorder queue after new distance changes
           }
         }
       }
     }
-    
-    return previous;
+    return previous; //return array of previous indexes
   }
   
   private double getDistanceBetween(Location a, Location b){
@@ -493,12 +500,12 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     LinkedStack<String> names = new LinkedStack<String>();
     int temp = getIndex(dest);
     while(temp!= -1){
-    names.push(getVertex(temp).getName());
-    temp = directions[temp];
+      names.push(getVertex(temp).getName());
+      temp = directions[temp];
     }
     String result = "";
     while(!names.isEmpty()){
-    result+= names.pop() + "\t";
+      result+= names.pop() + "\t";
     }
     return result;
     

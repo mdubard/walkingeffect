@@ -23,14 +23,16 @@ public class HomePanel extends JPanel{
   private JComboBox orig, dest;
   private JButton submit;
   private JTextArea keyText;
+  String[] locs;
   
-  public HomePanel(){
+  public HomePanel(Map m){
+    //on load reload locs?
     setLayout (new BorderLayout());
     
     header = new JLabel("\nPick your origin and destination below to receive the quickest path between them!", SwingConstants.CENTER);
     header.setFont(new Font("Courier New", Font.PLAIN, 16));
     
-    String[] locs = {"(1) Sports Center", "(2) Res Quad", "(3) Alumnae Hall", "(4) Lulu", "(5) Acad Quad", "(6) Science Center", "(7) Tower Court", "(8) Library", "(9) Stone Davis", "(10) East Dorms"}; 
+    locs = m.getLocations(); 
     //^^will be taken from Map object
     
     //initialize combo boxes, using String array ratings for values
@@ -115,6 +117,7 @@ public class HomePanel extends JPanel{
       String destString = dest.getSelectedItem().toString();
       
       footer.setText("Directions from " + origString + " to " + destString + ".");
+      footer.append(m.directionsString(m.findLocation(origString), m.findLocations(destString));
       //add getDirections(origString, destString) to footer
     }
   }

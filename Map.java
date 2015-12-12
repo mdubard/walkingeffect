@@ -95,7 +95,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     int index1 = getIndex(vertex1);
     int index2 = getIndex(vertex2);
     if (index1 != NOT_FOUND && index2 != NOT_FOUND) {
-      Path edge = new Path(NOT_FOUND, NOT_FOUND, false, false);
+      Path edge = new Path(NOT_FOUND, false, false);
       addArc(index1, index2, edge);
       addArc(index2, index1, edge);
     }
@@ -109,7 +109,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     int src = getIndex(srcVertex);
     int dest = getIndex(destVertex);
     if (src != NOT_FOUND && dest != NOT_FOUND) {
-      Path edge = new Path(NOT_FOUND, NOT_FOUND, false, false);
+      Path edge = new Path(NOT_FOUND, false, false);
       addArc(src, dest, edge);
     }
   }
@@ -511,6 +511,13 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     
   }
   
+  public String[] getLocations(){
+    String[] locs = new String[n];
+    for(int i = 0; i < n; i++){
+      locs[i] = vertices[i].getName();
+    }
+    return locs;
+  }
   
   public static void main(String[] args){
     Map m = new Map();
@@ -544,11 +551,11 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     m.addVertex(d);
     m.addVertex(e); 
     
-    m.addEdge(a, b, new Path(1, 3, true, true));
-    m.addEdge(a, c, new Path(1, 1, true, true));
-    m.addEdge(b, d, new Path(1, 1, true, true));
-    m.addEdge(c, e, new Path(1, 5, true, true));
-    m.addEdge(d, e, new Path(1, 1, true, true));
+    m.addEdge(a, b, new Path(3, true, true));
+    m.addEdge(a, c, new Path(1, true, true));
+    m.addEdge(b, d, new Path(1, true, true));
+    m.addEdge(c, e, new Path(5, true, true));
+    m.addEdge(d, e, new Path(1, true, true));
     
     int[] test = m.getDirections(a, e);
     for(int i = 0; i < test.length; i++){
