@@ -23,10 +23,12 @@ public class HomePanel extends JPanel{
   private JComboBox orig, dest;
   private JButton submit;
   private JTextArea keyText;
-  String[] locs;
+  private String[] locs;
+  private Map m;
   
-  public HomePanel(Map m){
+  public HomePanel(Map ma){
     //on load reload locs?
+    m = ma;
     setLayout (new BorderLayout());
     
     header = new JLabel("\nPick your origin and destination below to receive the quickest path between them!", SwingConstants.CENTER);
@@ -116,8 +118,7 @@ public class HomePanel extends JPanel{
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
       
-      footer.setText("Directions from " + origString + " to " + destString + ".");
-      footer.append(m.directionsString(m.findLocation(origString), m.findLocations(destString));
+      footer.setText("Directions from " + origString + " to " + destString + ".\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
       //add getDirections(origString, destString) to footer
     }
   }
