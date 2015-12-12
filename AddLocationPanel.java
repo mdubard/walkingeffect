@@ -1,14 +1,3 @@
-/* 
- * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
- * Writer for this Class: Hannah Murphy
- * 
- * File name: AddLocationPanel.java
- * Date Created: 12/8/15
- * Last Updated: 12/8/15
- * 
- * Class that contains Panel elements for the Add Location tab of the Walking Effect GUI
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -81,8 +70,8 @@ public class AddLocationPanel extends JPanel{
     navi.add(nearbyLoc1Combo);
     navi.add(dist1);
     navi.add(distField1);
-    navi.add(time1);
-    navi.add(timeField1);
+    //navi.add(time1);
+    //navi.add(timeField1);
     navi.add(hasHillsCheck1);
     navi.add(hasStairsCheck1);
     
@@ -92,8 +81,8 @@ public class AddLocationPanel extends JPanel{
     //navi.add(Box.createRigidArea(new Dimension(0, 100)));
     navi.add(dist2);
     navi.add(distField2);
-    navi.add(time2);
-    navi.add(timeField2);
+    //navi.add(time2);
+    //navi.add(timeField2);
     navi.add(hasHillsCheck2);
     navi.add(hasStairsCheck2);
     navi.add(add);
@@ -151,6 +140,9 @@ public class AddLocationPanel extends JPanel{
   }
   
   private class AddButtonListener implements ActionListener{
+    
+    private Map map;
+    
     public void AddButtonListener(Map map){
       //save combo box values as a string, if no value was chosen, the default value is 1
       String newLocName = locName.getText();
