@@ -2,11 +2,11 @@
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
  * Writer for this Class: Hannah Murphy
  * 
- * File name: WalkingEffectGUI.java
+ * File name: Map.java
  * Date Created: 12/8/15
  * Last Updated: 12/10/15
  * 
- * Class that creates the Walking Effect GUI
+ * Class that represents the Map. Uses Locations and Path
  */
 import java.io.File;
 import java.io.FileNotFoundException;

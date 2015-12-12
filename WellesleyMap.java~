@@ -1,0 +1,5 @@
+public class WellesleyMap extends Map{
+  public WellesleyMap(){
+    
+  }
+}
