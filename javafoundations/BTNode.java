@@ -125,57 +125,57 @@ public class BTNode<T>
    //  The following methods are left as programming projects.
    //-----------------------------------------------------------------
    public void preorder (ArrayIterator<T> iter) 
- {
-  iter.add(element);
-  
-  if(left != null)
-   left.preorder(iter);
-   
-  if(right != null)
-   right.preorder(iter);
- }
+	{
+		iter.add(element);
+		
+		if(left != null)
+			left.preorder(iter);
+			
+		if(right != null)
+			right.preorder(iter);
+	}
    public void postorder (ArrayIterator<T> iter) 
- {
-  if(left != null)
-   left.preorder(iter);
-   
-  if(right != null)
-   right.preorder(iter);
-   
-  iter.add(element);
- }
- 
- public int height()
- {
-  int l = 0;
-  int r = 0;
-  if(left != null || right != null)
-  {
-   
-   if(left != null)
-    l = left.height();
-    if(right != null)
-    r = right.height();
-   
-   if(l > r)
-    return l + 1;
-   else
-    return r + 1;
-  }
-  else
-   return 0;
- }
- 
- public void spin()
- {
-  BTNode<T> temp = left;
-  left = right;
-  right = temp;
-  
-  if(left != null)
-   left.spin();
-  if(right != null)
-   right.spin();
- }
-  
+	{
+		if(left != null)
+			left.preorder(iter);
+			
+		if(right != null)
+			right.preorder(iter);
+			
+		iter.add(element);
+	}
+	
+	public int height()
+	{
+		int l = 0;
+		int r = 0;
+		if(left != null || right != null)
+		{
+			
+			if(left != null)
+				l = left.height();
+		 	if(right != null)
+				r = right.height();
+			
+			if(l > r)
+				return l + 1;
+			else
+				return r + 1;
+		}
+		else
+			return 0;
+	}
+	
+	public void spin()
+	{
+		BTNode<T> temp = left;
+		left = right;
+		right = temp;
+		
+		if(left != null)
+			left.spin();
+		if(right != null)
+			right.spin();
+	}
+		
 }

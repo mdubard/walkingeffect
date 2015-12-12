@@ -57,29 +57,29 @@ public class CircularArrayQueue<T> implements Queue<T>
       queue = larger;
    }
 
- @Override
- public T dequeue() {
-  // TODO Auto-generated method stub
-  return null;
- }
+	@Override
+	public T dequeue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
- @Override
- public T first() {
-  // TODO Auto-generated method stub
-  return null;
- }
+	@Override
+	public T first() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
- @Override
- public boolean isEmpty() {
-  // TODO Auto-generated method stub
-  return false;
- }
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
- @Override
- public int size() {
-  // TODO Auto-generated method stub
-  return 0;
- }
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
    //-----------------------------------------------------------------
    //  The following methods are left as Programming Projects.

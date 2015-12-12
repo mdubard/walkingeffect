@@ -71,39 +71,39 @@ public class ArrayStack<T> implements Stack<T>
    *  stack contains no elements.
    */
    public T pop () throws EmptyCollectionException 
- {
-  if(count == 0)
-   throw new EmptyCollectionException("Pop operation failed. Stack is empty.");
-   
-  T temp = stack[count - 1];
-  count--;
-  return temp;
- }
+	{
+		if(count == 0)
+			throw new EmptyCollectionException("Pop operation failed. Stack is empty.");
+			
+		T temp = stack[count - 1];
+		count--;
+		return temp;
+	}
 
    /**
    *  Returns top without retrieving
    */
    public T peek () throws EmptyCollectionException 
- {
-  if(count == 0)
-   throw new EmptyCollectionException("Peek operation failed. Stack is empty.");
-   
-  return stack[count - 1];
- }
+	{
+		if(count == 0)
+			throw new EmptyCollectionException("Peek operation failed. Stack is empty.");
+			
+		return stack[count - 1];
+	}
 
    /**
    *  Checks if stack is empty
    */
    public boolean isEmpty() 
- {
-  return count == 0;
- }
+	{
+		return count == 0;
+	}
 
    /**
    *  Returns the number of eleements in the stack
    */
    public int size() 
- {
-  return count;
- }
+	{
+		return count;
+	}
 }
