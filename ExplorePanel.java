@@ -23,7 +23,7 @@ public class ExplorePanel extends JPanel{
   private JLabel header, name, picLabel;
   private JTextArea about, keyText;
   private JScrollPane aboutScroll;
-  private JComboBox<String> locMenu;
+  private JComboBox locMenu;
   private Map map;
   private Location[] locations;
   private Location chosenLocation;
@@ -52,12 +52,12 @@ public class ExplorePanel extends JPanel{
     header = new JLabel("Use this menu to learn more about the locations on Wellesley's campus.");
     name = new JLabel ("You Selected" + chosenLocation.getName());
     
-    locMenu = new JComboBox<String>();
+    locMenu = new JComboBox();
     //locMenu.setPreferredSize(new Dimension (50, 100));
     
     locMenu.addItem("Select a Location");
-    for(Location loc: locations){
-      locMenu.addItem(loc.getName());
+    for(int i = 0; i < map.n(); i++){
+      locMenu.addItem(locations[i].getName());
     }
     
     about = new JTextArea("About " + chosenLocation.getAbout());
@@ -98,7 +98,7 @@ public class ExplorePanel extends JPanel{
     keyText.setEditable(false);
     keyText.append("Map Key: ");
     //keyText.setRows(1);
-    for(int i = 0; i < locations.length; i++){
+    for(int i = 0; i < map.n(); i++){
       keyText.append("\n");
       keyText.append(locations[i].getName());
     }
@@ -113,7 +113,7 @@ public class ExplorePanel extends JPanel{
     bottomPanel.add(name, BorderLayout.NORTH);
     bottomPanel.add(about, BorderLayout.WEST);
   //  try{
-      ImageIcon pic = new ImageIcon(chosenLocation.getPicture());
+      ImageIcon pic = new ImageIcon(chosenLocation.getPic());
       Image img = pic.getImage();
       BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
       Graphics g = bi.createGraphics();
@@ -140,13 +140,13 @@ public class ExplorePanel extends JPanel{
   private class ExploreButtonListener implements ActionListener{
     public void actionPerformed(ActionEvent e){
       //System.out.println("action");
-      String s = locMenu.getItemAt(locMenu.getSelectedIndex());
+      String s = locMenu.getItemAt(locMenu.getSelectedIndex()).toString();
       System.out.println("Selected: " + s);
       if(s.equals("Select a Location")){
         return;
       }
       else{
-        for (int i = 0; i<locations.length; i++){
+        for (int i = 0; i<map.n(); i++){
           if(s.equals(locations[i].getName())){
             chosenLocation = locations[i];
             System.out.println("Location found in array");
@@ -155,7 +155,7 @@ public class ExplorePanel extends JPanel{
         name.setText ("You Selected:    " + chosenLocation.getName());
         about.setText("About:     " + chosenLocation.getAbout());
         
-      ImageIcon pic = new ImageIcon(chosenLocation.getPicture());
+      ImageIcon pic = new ImageIcon(chosenLocation.getPic());
       Image img = pic.getImage();
       BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
       Graphics g = bi.createGraphics();
