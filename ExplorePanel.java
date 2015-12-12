@@ -22,7 +22,7 @@ public class ExplorePanel extends JPanel{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
   private JTextArea about, keyText;
-  private JScrollPane aboutScroll;
+  private JScrollPane aboutScroll, bottomScroll;
   private JComboBox locMenu;
   private Map map;
   private Location[] locations;
@@ -61,9 +61,12 @@ public class ExplorePanel extends JPanel{
     }
     
     about = new JTextArea("About " + chosenLocation.getAbout());
-    about.setPreferredSize(new Dimension(500, 150));
-    about.setLineWrap(true);
+    about.setPreferredSize(new Dimension(500, 100));
+    about.setColumns(25);
+    about.setMaximumSize(about.getPreferredSize());
+    //about.setLineWrap(true);
     aboutScroll = new JScrollPane (about, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    about.setEditable(false);
     
     
     //layout manager, addeverything
@@ -94,6 +97,7 @@ public class ExplorePanel extends JPanel{
       System.out.println(io);
     }
     keyText = new JTextArea(12, 20);
+    keyText.setEditable(false);
     keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
     keyText.append("Map Key: ");
@@ -112,16 +116,17 @@ public class ExplorePanel extends JPanel{
     bottomPanel.setLayout(new BorderLayout());
     bottomPanel.add(name, BorderLayout.NORTH);
     bottomPanel.add(about, BorderLayout.WEST);
-  //  try{
-      ImageIcon pic = new ImageIcon(chosenLocation.getPic());
-      Image img = pic.getImage();
-      BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-      Graphics g = bi.createGraphics();
-      g.drawImage(img, 100, 50, 500, 350, null); //locates and sizes image
-      ImageIcon newIcon = new ImageIcon(bi);
-      picLabel = new JLabel(newIcon);  //adds image to label
-      bottomPanel.add(picLabel); //adds label to panel
-   // }
+    //  try{
+    ImageIcon pic = new ImageIcon(chosenLocation.getPic());
+    Image img = pic.getImage();
+    BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    Graphics g = bi.createGraphics();
+    g.drawImage(img, 100, 20, 300, 150, null); //locates and sizes image
+    ImageIcon newIcon = new ImageIcon(bi);
+    picLabel = new JLabel(newIcon);  //adds image to label
+    bottomPanel.add(picLabel); //adds label to panel
+    // }
+    bottomScroll = new JScrollPane (bottomPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     
     
     //add picture to bottom panel
@@ -129,12 +134,7 @@ public class ExplorePanel extends JPanel{
     this.add(header, BorderLayout.NORTH);
     this.add(leftPanel, BorderLayout.WEST);
     this.add(rightPanel, BorderLayout.EAST);
-    this.add(bottomPanel, BorderLayout.SOUTH);
-    
-    
-    
-    
-    
+    this.add(new JScrollPane(bottomPanel), BorderLayout.SOUTH); 
   }
   
   private class ExploreButtonListener implements ActionListener{
@@ -155,13 +155,13 @@ public class ExplorePanel extends JPanel{
         name.setText ("You Selected:    " + chosenLocation.getName());
         about.setText("About:     " + chosenLocation.getAbout());
         
-      ImageIcon pic = new ImageIcon(chosenLocation.getPic());
-      Image img = pic.getImage();
-      BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-      Graphics g = bi.createGraphics();
-      g.drawImage(img, 100, 50, 500, 350, null); //locates and sizes image
-      ImageIcon newIcon = new ImageIcon(bi);
-      picLabel.setIcon(newIcon);
+        ImageIcon pic = new ImageIcon(chosenLocation.getPic());
+        Image img = pic.getImage();
+        BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bi.createGraphics();
+        g.drawImage(img, 100, 20, 300, 150, null); //locates and sizes image
+        ImageIcon newIcon = new ImageIcon(bi);
+        picLabel.setIcon(newIcon);
         
         
       }

@@ -47,9 +47,9 @@ public class HomePanel extends JPanel{
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
-    origin.setFont(new Font("Courier New", Font.PLAIN, 15));
+    origin.setFont(new Font("Helvetica", Font.PLAIN, 15));
     destination = new JLabel("Destination: ");
-    destination.setFont(new Font("Courier New", Font.PLAIN, 15));
+    destination.setFont(new Font("Helvetica Light", Font.PLAIN, 15));
     
     //creates submit button
     submit = new JButton("Submit");
