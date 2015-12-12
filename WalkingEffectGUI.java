@@ -45,7 +45,7 @@ public class WalkingEffectGUI{
     
     //adds three tabs
     HomePanel home = new HomePanel(map); //will pass map into home
-    AddLocationPanel addLoc = new AddLocationPanel();
+    AddLocationPanel addLoc = new AddLocationPanel(map);
     ExplorePanel ep = new ExplorePanel(map);
     tp.addTab("Home", new JScrollPane(home));
     tp.addTab("Add Location", addLoc);
