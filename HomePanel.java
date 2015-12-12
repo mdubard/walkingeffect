@@ -35,9 +35,10 @@ public class HomePanel extends JPanel{
     m = ma;
     setLayout (new BorderLayout());
     
+    //set font to default as helvetica
     Font headerFont = new Font("Helvetica", Font.PLAIN, 18);
     Font customFont = new Font("Helvetica", Font.PLAIN, 15);
-    Font keyFont = new Font("Helvetica", Font.PLAIN, 12);
+    Font keyFont = new Font("Helvetica", Font.PLAIN, 13);
     
     try {
       //create the font to use. Specify the size!
@@ -162,13 +163,18 @@ public class HomePanel extends JPanel{
       String destString = dest.getSelectedItem().toString();
       String stairsString = "Stairs an option. ";
       String hills = "Hills an option. ";
-      if(stairs.isSelected())
+      boolean avoidStairs = false;
+      boolean avoidHills = false;
+      if(stairs.isSelected()){
         stairsString = "Stairs not an option. ";
-      if(steep.isSelected())
+        avoidStairs = true;
+      }
+      if(steep.isSelected()){
         hills = "Hills not an option. ";
+        avoidHills = true;
+      }
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
-      //add getDirections(origString, destString) to footer
+      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString), avoidStairs, avoidHills));
     }
   }
 }

@@ -30,16 +30,16 @@ public class ExplorePanel extends JPanel{
   
   
   public ExplorePanel(Map m){ //pass in Map from GUI driver
-    //testing
+    /*//testing
     map = m;
     Location a = new Location("A", "The letter A", "wellesleylogo.png");
     Location b = new Location ("B", "the letter B", "bTest.jpeg");
     map.addVertex(a);
     map.addVertex(b);
-    map.addEdge(a, b, new Path(2, false, false));
+    map.addEdge(a, b, new Path(2, false, false));*/
     chosenLocation = new Location (" ");
     //get location information (from Map passed in)
-    //map = m;
+    map = m;
     locations = map.getAllVertices();
     
     
@@ -64,7 +64,7 @@ public class ExplorePanel extends JPanel{
     about.setPreferredSize(new Dimension(500, 100));
     about.setColumns(25);
     about.setMaximumSize(about.getPreferredSize());
-    //about.setLineWrap(true);
+    about.setLineWrap(true);
     aboutScroll = new JScrollPane (about, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     about.setEditable(false);
     
