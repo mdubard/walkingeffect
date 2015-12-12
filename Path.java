@@ -6,7 +6,7 @@
 
 public class Path implements Comparable<Path> {
   //double time; //time in minutes needed to walk the path at normal rate 
-  int distance; //distance of path in feet (???)
+  double distance; //distance of path in feet (???)
   boolean hasStairs; boolean hasHills;
   
   
@@ -18,7 +18,7 @@ public class Path implements Comparable<Path> {
    * @param stairs  true if the path contains stairs
    * @param hill    true if the path is hilly
    */ 
-  public Path (int dist, boolean stairs, boolean hill){
+  public Path (double dist, boolean stairs, boolean hill){
     //time = t;
     distance = dist;
     hasStairs = stairs;
@@ -46,7 +46,7 @@ public class Path implements Comparable<Path> {
    * @return     the difference in walking times of the paths
    */ 
   public int compareTo(Path that){
-    return this.getDistance() - that.getDistance();
+    return (int) (this.getDistance() - that.getDistance());
   }
    
   
@@ -82,7 +82,7 @@ public class Path implements Comparable<Path> {
    * @return    the distance of this path
    */ 
   
-  public int getDistance(){
+  public double getDistance(){
   return distance;
   }
   
