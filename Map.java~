@@ -519,6 +519,10 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     return locs;
   }
   
+  public Location[] getAllVertices(){
+    return vertices;
+  }
+  
   public Location findLocation(String loc){
     for(int i = 0; i < n; i++){
       if(vertices[i].getName().equalsIgnoreCase(loc))
