@@ -1,6 +1,6 @@
 /* 
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
- * Writer for this Class: Mary DuBard
+ * Writer for this Class: Hannah Murphy
  * 
  * File name: AddLocationPanel.java
  * Date Created: 12/8/15
