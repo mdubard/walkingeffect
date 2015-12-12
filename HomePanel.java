@@ -25,6 +25,8 @@ public class HomePanel extends JPanel{
   private JTextArea keyText;
   private String[] locs;
   private Map m;
+  private JCheckBox stairs;
+  private JCheckBox steep;
   
   public HomePanel(Map ma){
     //on load reload locs?
@@ -40,6 +42,8 @@ public class HomePanel extends JPanel{
     //initialize combo boxes, using String array ratings for values
     orig = new JComboBox(locs);
     dest = new JComboBox(locs);
+    stairs = new JCheckBox("Avoid Stairs");
+    steep = new JCheckBox("Avoid Hills");
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
@@ -62,6 +66,8 @@ public class HomePanel extends JPanel{
     navi.add(Box.createRigidArea(new Dimension(0, 50)));
     navi.add(destination);
     navi.add(dest);
+    navi.add(stairs);
+    navi.add(steep);
     navi.add(Box.createRigidArea(new Dimension(0, 100)));
     navi.add(submit);
     navi.add(Box.createRigidArea (new Dimension (0, 100)));
@@ -117,8 +123,14 @@ public class HomePanel extends JPanel{
       //save combo box values as a string, if no value was chosen, the default value is 1
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
+      String stairsString = "Stairs an option. ";
+      String hills = "Hills an option. ";
+      if(stairs.isSelected())
+        stairsString = "Stairs not an option. ";
+      if(steep.isSelected())
+        hills = "Hills not an option. ";
       
-      footer.setText("Directions from " + origString + " to " + destString + ".\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
+      footer.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
       //add getDirections(origString, destString) to footer
     }
   }

@@ -571,6 +571,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     }
     
     System.out.println("\n" + m.directionsString(a, e));
+    System.out.println("\n" + m.directionsString(a, b));
   }
   
 }
