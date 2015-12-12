@@ -35,28 +35,52 @@ public class HomePanel extends JPanel{
     m = ma;
     setLayout (new BorderLayout());
     
+    Font headerFont = new Font("Helvetica", Font.PLAIN, 18);
+    Font customFont = new Font("Helvetica", Font.PLAIN, 15);
+    Font keyFont = new Font("Helvetica", Font.PLAIN, 12);
+    
+    try {
+      //create the font to use. Specify the size!
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(25f);
+      customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
+      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      //register the font
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    catch(FontFormatException e)
+    {
+      e.printStackTrace();
+    }
+    
+    
     header = new JLabel("\nPick your origin and destination below to receive the quickest path between them!", SwingConstants.CENTER);
-    header.setFont(new Font("Courier New", Font.PLAIN, 16));
+    header.setFont(headerFont);
     
     locs = m.getLocations(); 
-    //^^will be taken from Map object
     
     //initialize combo boxes, using String array ratings for values
     orig = new JComboBox(locs);
+    orig.setFont(keyFont);
     dest = new JComboBox(locs);
+    dest.setFont(keyFont);
     stairs = new JCheckBox("Avoid Stairs");
+    stairs.setFont(keyFont);
     steep = new JCheckBox("Avoid Hills");
+    steep.setFont(keyFont);
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
-    origin.setFont(new Font("Helvetica", Font.PLAIN, 15));
+    origin.setFont(customFont);
     destination = new JLabel("Destination: ");
-    destination.setFont(new Font("Helvetica Light", Font.PLAIN, 15));
+    destination.setFont(customFont);
     
     //creates submit button
     submit = new JButton("Submit");
     submit.addActionListener(new submitListener());
-    submit.setFont(new Font("Courier New", Font.PLAIN, 12));
+    submit.setFont(customFont);
     
     //Creates panel for navigation options
     navi = new JPanel();
@@ -104,16 +128,18 @@ public class HomePanel extends JPanel{
       keyText.append("\n");
       keyText.append(locs[i]);
     }
+    keyText.setFont(keyFont);
     
     JScrollPane jp = new JScrollPane(keyText);
     jp.setMaximumSize(keyText.getPreferredSize());
     map.add(jp);
     
+    
     //Initializes footer
     directions = new JTextPane();
     directions.setEditable(false);
     directions.setText("<Directions here>");
-    directions.setFont(new Font("Courier New", Font.PLAIN, 16));
+    directions.setFont(customFont);
     StyledDocument doc = directions.getStyledDocument();
     SimpleAttributeSet center = new SimpleAttributeSet();
     StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
