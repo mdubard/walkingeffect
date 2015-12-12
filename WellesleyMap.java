@@ -45,7 +45,7 @@ public class WellesleyMap extends Map{
     Path resQ2acaQ = new Path(.2, true, true, new LinkedList<String>(Arrays.asList("ResQ", "AcaQ")));
     Path resQ2sciCen = new Path(.3, true, true, new LinkedList<String>(Arrays.asList("ResQ", "SciCen")));
     //(3)Alum will go to KSC(above), Lulu, and Twr
-    Path alum2lulu = new Path(.2, false, false, new LinkedList<String>(Arrays.asList("Alum", "Lulu")));
+    Path alum2lulu = new Path(.14, false, false, new LinkedList<String>(Arrays.asList("Alum", "Lulu")));
     Path alum2twr = new Path(.2, false, true, new LinkedList<String>(Arrays.asList("Alum", "Twr")));
     //(4)Lulu will go to Alum(above), ResQ(above), AcaQ, Twr, and Lib
     Path lulu2acaQ = new Path(.2, true, false, new LinkedList<String>(Arrays.asList("Lulu", "AcaQ")));
