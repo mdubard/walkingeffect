@@ -12,6 +12,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.text.*;
 import javax.swing.event.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +24,7 @@ public class HomePanel extends JPanel{
   private JComboBox orig, dest;
   private JButton submit;
   private JTextArea keyText;
+  private JTextPane directions;
   private String[] locs;
   private Map m;
   private JCheckBox stairs;
@@ -108,14 +110,23 @@ public class HomePanel extends JPanel{
     map.add(jp);
     
     //Initializes footer
-    footer = new JLabel("<Directions here>", SwingConstants.CENTER);
-    footer.setFont(new Font("Courier New", Font.PLAIN, 16));
+    directions = new JTextPane();
+    directions.setEditable(false);
+    directions.setText("<Directions here>");
+    directions.setFont(new Font("Courier New", Font.PLAIN, 16));
+    StyledDocument doc = directions.getStyledDocument();
+    SimpleAttributeSet center = new SimpleAttributeSet();
+    StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+    doc.setParagraphAttributes(0, doc.getLength(), center, false);
+    
+    JScrollPane jp2 = new JScrollPane(directions);
+    jp2.setMaximumSize(directions.getPreferredSize());
     
     //adds elements to frame
     add(header, BorderLayout.NORTH);
     add(navi, BorderLayout.WEST);
     add(map, BorderLayout.EAST);
-    add(footer, BorderLayout.SOUTH);
+    add(directions, BorderLayout.SOUTH);
   }
   
   private class submitListener implements ActionListener{
@@ -130,7 +141,7 @@ public class HomePanel extends JPanel{
       if(steep.isSelected())
         hills = "Hills not an option. ";
       
-      footer.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
       //add getDirections(origString, destString) to footer
     }
   }

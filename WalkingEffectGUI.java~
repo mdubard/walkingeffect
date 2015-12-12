@@ -48,8 +48,8 @@ public class WalkingEffectGUI{
     AddLocationPanel addLoc = new AddLocationPanel();
     ExplorePanel ep = new ExplorePanel(map);
     tp.addTab("Home", new JScrollPane(home));
-    tp.addTab("Add Location", addLoc);
-    tp.addTab("Explore", ep);
+    tp.addTab("Add Location", new JScrollPane(addLoc));
+    tp.addTab("Explore", new JScrollPane(ep));
     
     //default close
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

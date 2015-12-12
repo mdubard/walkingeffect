@@ -6,7 +6,11 @@
  * Date Created: 12/8/15
  * Last Updated: 12/12/15
  * 
+<<<<<<< HEAD
  * Creates an instance of a Map Object, which provides the finctionality for the map represented in WalkingEffectGUI.java
+=======
+ * Class that represents the Map. Uses Locations and Path
+>>>>>>> origin/master
  */
 
 import java.io.File;
