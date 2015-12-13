@@ -31,18 +31,43 @@ public class AddLocationPanel extends JPanel{
     instanceMap = map;
     setLayout (new BorderLayout());
     
+    //set font to default as helvetica
+    Font headerFont = new Font("Helvetica", Font.PLAIN, 20);
+    Font customFont = new Font("Helvetica", Font.PLAIN, 15);
+    Font keyFont = new Font("Helvetica", Font.PLAIN, 13);
+    
+    try {
+      //create the font to use. Specify the size!
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
+      customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
+      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      //register the font
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    catch(FontFormatException e)
+    {
+      e.printStackTrace();
+    }
+    
     header = new JLabel("\nFill in the fields below to add a custom location to your map!", SwingConstants.CENTER);
-    header.setFont(new Font("Courier New", Font.PLAIN, 16));
+    header.setFont(headerFont);
     
     locs = instanceMap.getLocations();
     
     //initialize combo boxes, using String array ratings for values
     nearbyLoc1Combo = new JComboBox(locs);
+    nearbyLoc1Combo.setFont(keyFont);
     nearbyLoc2Combo = new JComboBox(locs);
+    nearbyLoc1Combo.setFont(keyFont);
     
     enterName = new JLabel("Name of new Location");
-    enterName.setFont(new Font("Courier New", Font.PLAIN, 15));
+    enterName.setFont(customFont);
+    JPanel locNamePanel = new JPanel();
     locName = new JTextField(20);
+    locNamePanel.add(locName);
     
     //initializes labels for combo boxes
     nearbyLoc1 = new JLabel("Nearby Location 1: ");
@@ -75,7 +100,7 @@ public class AddLocationPanel extends JPanel{
     navi.setLayout(new BoxLayout(navi, BoxLayout.Y_AXIS));
     navi.add(Box.createRigidArea(new Dimension(0, 50)));
     navi.add(enterName);
-    navi.add(locName);
+    navi.add(locNamePanel);
     
     navi.add(nearbyLoc1);
     //navi.add(Box.createRigidArea(new Dimension(0, 5)));
