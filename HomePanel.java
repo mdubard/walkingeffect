@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 public class HomePanel extends JPanel implements ComponentListener{
   private JLabel header, origin, destination, footer;
   private JPanel navi, map;
-  private JComboBox orig, dest;
+  private static JComboBox orig, dest;
   private JButton submit;
   private static JTextArea keyText;
   private JTextPane directions;
@@ -42,13 +42,16 @@ public class HomePanel extends JPanel implements ComponentListener{
   }
   
   public static void setComboBoxes(String[] locs){
-    keyText.setText("");
-    keyText.append("Map Key: ");
-    //keyText.setRows(1);
+    orig.removeAllItems();
     for(int i = 0; i < locs.length; i++){
-      keyText.append("\n");
-      keyText.append(locs[i]);
+      orig.addItem(locs[i]);
     }
+    
+    dest.removeAllItems();
+    for(int i = 0; i < locs.length; i++){
+      dest.addItem(locs[i]);
+    }
+    //orig.addItem(locs);
     //keyText.setFont(keyFont);
   }
   
