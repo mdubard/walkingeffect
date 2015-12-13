@@ -2,11 +2,11 @@
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
  * Writer for this Class: Mary DuBard
  * 
- * File name: WalkingEffectGUI.java
+ * File name: WellesleyMap.java
  * Date Created: 12/12/15
  * Last Updated: 12/12/15
  * 
- * Class that creates Map object for Wellesley
+ * Class that creates Map object specific to Wellesley
  */
 import java.util.*;
 

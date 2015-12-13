@@ -156,7 +156,7 @@ public class AddLocationPanel extends JPanel{
         boolean hasStairs1 = hasStairsCheck1.isSelected();
         
         Path p = new Path(locDist1, hasStairs1, hasHills1);
-        //map.addEdge(l, map.findLocation(newNearbyLoc1), p);
+        map.addEdge(l, map.findLocation(newNearbyLoc1), p);
       }catch(NullPointerException e){
         System.out.println("You must enter at least 1 Nearby Location");
       }
@@ -169,7 +169,7 @@ public class AddLocationPanel extends JPanel{
         boolean hasStairs2 = hasStairsCheck2.isSelected();
         
         Path p = new Path(locDist2, hasStairs2, hasHills2);
-        //map.addEdge(l, map.findLocation(newNearbyLoc2), p);
+        map.addEdge(l, map.findLocation(newNearbyLoc2), p);
       }catch(NullPointerException e){
         //System.out.println("You must enter at least 1 Nearby Location");
       }

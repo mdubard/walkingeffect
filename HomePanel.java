@@ -42,7 +42,7 @@ public class HomePanel extends JPanel{
     
     try {
       //create the font to use. Specify the size!
-      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(25f);
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
       customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
       keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
