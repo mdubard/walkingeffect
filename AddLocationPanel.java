@@ -21,60 +21,89 @@ public class AddLocationPanel extends JPanel{
     instanceMap = map;
     setLayout (new BorderLayout());
     
+        //set font to default as helvetica
+    Font headerFont = new Font("Helvetica", Font.PLAIN, 20);
+    Font customFont = new Font("Helvetica", Font.PLAIN, 15);
+    Font keyFont = new Font("Helvetica", Font.PLAIN, 13);
+    
+    try {
+      //create the font to use. Specify the size!
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
+      customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
+      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      //register the font
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    catch(FontFormatException e)
+    {
+      e.printStackTrace();
+    }
+    
     header = new JLabel("\nFill in the fields below to add a custom location to your map!", SwingConstants.CENTER);
-    header.setFont(new Font("Courier New", Font.PLAIN, 16));
+        header.setFont(headerFont);
     
     locs = instanceMap.getLocations();
     
     comboLocs = instanceMap.getLocationsCombo();
       //initialize combo boxes, using String array ratings for values
     nearbyLoc1Combo = new JComboBox(comboLocs);
+    nearbyLoc1Combo.setFont(keyFont);
     nearbyLoc2Combo = new JComboBox(comboLocs);
+    nearbyLoc2Combo.setFont(keyFont);
     
-    enterName = new JLabel("Name of new Location");
-    enterName.setFont(new Font("Courier New", Font.PLAIN, 15));
+    enterName = new JLabel("Name of New Location: ");
+    enterName.setFont(customFont);
+    JPanel locNamePanel = new JPanel();
     locName = new JTextField(20);
+    locNamePanel.add(locName);
     
     //initializes labels for combo boxes
     nearbyLoc1 = new JLabel("Nearby Location 1: ");
-    nearbyLoc1.setFont(new Font("Courier New", Font.PLAIN, 15));
+    nearbyLoc1.setFont(customFont);
     nearbyLoc2 = new JLabel("Nearby Location 2: ");
-    nearbyLoc2.setFont(new Font("Courier New", Font.PLAIN, 15));
+    nearbyLoc2.setFont(customFont);
     
+    JPanel distField1Panel = new JPanel();
     dist1 = new JLabel("Distance to Location 1: ");
+    dist1.setFont(customFont);
     distField1 = new JTextField(10);
-    time1 = new JLabel("Time to Location 1: ");
-    timeField1 = new JTextField(10);
+    distField1Panel.add(distField1);
     hasHillsCheck1 = new JCheckBox("The Path to Location 1 has Hills");
+    hasHillsCheck1.setFont(keyFont);
     hasStairsCheck1 = new JCheckBox("The Path to Location 1 has Stairs");
+    hasStairsCheck1.setFont(keyFont);
     
+    JPanel distField2Panel = new JPanel();
     dist2 = new JLabel("Distance to Location 2: ");
+    dist2.setFont(customFont);
     distField2 = new JTextField(20);
-    time2 = new JLabel("Time to Location 2: ");
-    timeField2 = new JTextField(20);
+    distField2Panel.add(distField2);
     hasHillsCheck2 = new JCheckBox("The Path to Location 2 has Hills");
+    hasHillsCheck2.setFont(keyFont);
     hasStairsCheck2 = new JCheckBox("The Path to Location 2 has Stairs");
+    hasStairsCheck2.setFont(keyFont);
     
     //creates submit button
     add = new JButton("Add Location");
     add.setPreferredSize(new Dimension(40, 40));
     add.addActionListener(new AddButtonListener());
-    add.setFont(new Font("Courier New", Font.PLAIN, 12));
+    add.setFont(customFont);
     
     //Creates panel for navigation options
     navi = new JPanel();
     navi.setLayout(new BoxLayout(navi, BoxLayout.Y_AXIS));
     navi.add(Box.createRigidArea(new Dimension(0, 50)));
     navi.add(enterName);
-    navi.add(locName);
+    navi.add(locNamePanel);
     
     navi.add(nearbyLoc1);
     //navi.add(Box.createRigidArea(new Dimension(0, 5)));
     navi.add(nearbyLoc1Combo);
     navi.add(dist1);
-    navi.add(distField1);
-    //navi.add(time1);
-    //navi.add(timeField1);
+    navi.add(distField1Panel);
     navi.add(hasHillsCheck1);
     navi.add(hasStairsCheck1);
     
@@ -82,7 +111,7 @@ public class AddLocationPanel extends JPanel{
     navi.add(nearbyLoc2);
     navi.add(nearbyLoc2Combo);
     navi.add(dist2);
-    navi.add(distField2);
+    navi.add(distField2Panel);
     navi.add(hasHillsCheck2);
     navi.add(hasStairsCheck2);
     navi.add(add);
@@ -110,6 +139,7 @@ public class AddLocationPanel extends JPanel{
     }
     
     keyText = new JTextArea(12, 20);
+    keyText.setFont(keyFont);
     keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
     keyText.append("Map Key: ");
@@ -122,13 +152,14 @@ public class AddLocationPanel extends JPanel{
     JScrollPane jp = new JScrollPane(keyText);
     jp.setMaximumSize(keyText.getPreferredSize());
     
-    availLocs = new JLabel("Already Added Locations:");
+    availLocs = new JLabel("Already Added Locations: ");
+    availLocs.setFont(keyFont);
     
     mapPic.add(jp);
     
     //Initializes footer
-    footer = new JLabel("<Directions here>", SwingConstants.CENTER);
-    footer.setFont(new Font("Courier New", Font.PLAIN, 16));
+    footer = new JLabel("", SwingConstants.CENTER);
+    footer.setFont(customFont);
     
     //adds elements to frame
     add(header, BorderLayout.NORTH);
