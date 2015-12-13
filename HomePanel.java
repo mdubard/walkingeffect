@@ -174,7 +174,7 @@ public class HomePanel extends JPanel{
         avoidHills = true;
       }
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString), avoidStairs, avoidHills));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }
