@@ -13,6 +13,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.io.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class AboutPanel extends JPanel{
   JLabel header;
@@ -42,5 +44,23 @@ public class AboutPanel extends JPanel{
     header = new JLabel("Welcome to the Walking Effect!", SwingConstants.CENTER);
     header.setFont(headerFont);
     
+    JPanel picPanel = new JPanel();
+    try{
+      BufferedImage myPicture = ImageIO.read(new File("logo.png"));
+      ImageIcon pic = new ImageIcon(myPicture);
+      Image img = pic.getImage();
+      BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+      Graphics g = bi.createGraphics();
+      g.drawImage(img, 100, 50, 400, 280, null); //locates and sizes image
+      ImageIcon newIcon = new ImageIcon(bi);
+      JLabel picLabel = new JLabel(newIcon);  //adds image to label
+      picPanel.add(picLabel); //adds label to panel
+    }
+    catch(IOException io){
+      System.out.println(io);
+    }
+    
+    add(header);
+    add(picPanel);
   }
 }
