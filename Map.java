@@ -79,6 +79,22 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   }
   
   /******************************************************************
+   getLocations()
+   
+   returns string array of all Location names
+   Used to populate the Map Key text fields in the application GUI
+   ******************************************************************/
+  public String[] getLocationsCombo(){
+    
+    String[] locs = new String[n+1];
+    locs[0] = "No location selected."; 
+    for(int i = 1; i < n; i++){
+      locs[i] = locations[i].getName();
+    }
+    return locs;
+  }
+  
+  /******************************************************************
    getAllVertices()
    
    returns the array of Locations in the Map
@@ -656,19 +672,23 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       //System.out.println("Checking path between temp and previous " + previous + getVertex(temp));
       }
     }
-    String result = "";
+    String result = "Exit ";
     while(!names.isEmpty()){
-      result+= names.pop() + "\t";
+      String tempLocation = names.pop();
+      if(!tempLocation.equals(dest.getName()))
+        result+= tempLocation + ". \nWalk towards: ";
+      else
+        result+= tempLocation + ". \nYou have arrived!";
     }
     
     if(hasStairs && hasHills)
-      result += " This path contains stairs and hills.";
+      result += " \nThis path contains stairs and hills.";
     else if(hasHills)
-      result += " This path contains hills.";
+      result += " \nThis path contains hills.";
     else if(hasStairs)
-      result += " This path contains stairs.";
+      result += " \nThis path contains stairs.";
     else
-      result += " This path does not contain stairs or hills.";
+      result += " \nThis path does not contain stairs or hills.";
     return result;
   }
   

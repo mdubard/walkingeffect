@@ -67,10 +67,10 @@ public class HomePanel extends JPanel implements ComponentListener{
     orig.setFont(keyFont);
     dest = new JComboBox(locs);
     dest.setFont(keyFont);
-    stairs = new JCheckBox("Avoid Stairs");
-    stairs.setFont(keyFont);
-    steep = new JCheckBox("Avoid Hills");
-    steep.setFont(keyFont);
+    //stairs = new JCheckBox("Avoid Stairs");
+    //stairs.setFont(keyFont);
+    //steep = new JCheckBox("Avoid Hills");
+    //steep.setFont(keyFont);
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
@@ -93,8 +93,8 @@ public class HomePanel extends JPanel implements ComponentListener{
     navi.add(Box.createRigidArea(new Dimension(0, 50)));
     navi.add(destination);
     navi.add(dest);
-    navi.add(stairs);
-    navi.add(steep);
+    //navi.add(stairs);
+    //navi.add(steep);
     navi.add(Box.createRigidArea(new Dimension(0, 100)));
     navi.add(submit);
     navi.add(Box.createRigidArea (new Dimension (0, 100)));
@@ -178,20 +178,20 @@ public class HomePanel extends JPanel implements ComponentListener{
       //save combo box values as a string, if no value was chosen, the default value is 1
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
-      String stairsString = "Stairs an option. ";
-      String hills = "Hills an option. ";
+      //String stairsString = "Stairs an option. ";
+      //String hills = "Hills an option. ";
       boolean avoidStairs = false;
       boolean avoidHills = false;
-      if(stairs.isSelected()){
+      /*if(stairs.isSelected()){
         stairsString = "Stairs not an option. ";
         avoidStairs = true;
       }
       if(steep.isSelected()){
         hills = "Hills not an option. ";
         avoidHills = true;
-      }
+      }*/
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }
