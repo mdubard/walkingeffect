@@ -142,7 +142,7 @@ public class AddLocationPanel extends JPanel{
     private String newNearbyLoc2;
     
     public void actionPerformed(ActionEvent event){
-      footer.setText("Yo");
+      //footer.setText("Yo");
       
       //save combo box values as a string, if no value was chosen, the default value is 1
       String newLocName = locName.getText();
@@ -156,12 +156,15 @@ public class AddLocationPanel extends JPanel{
       }
       footer.setText(s);
 */
+      boolean isFirstDest = false;
+      boolean isSecondDest = false;
       
       newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
       if(!newNearbyLoc1.equals("No location selected.")){
         try{
           //footer.setText("You have to enter at least one nearby location! try again");
         //newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
+          isFirstDest = true;
         double locDist1 = Double.parseDouble(distField1.getText());
         //double timeDist1 = Double.parseDouble(timeField1.getText());
         boolean hasHills1 = hasHillsCheck1.isSelected();
@@ -182,6 +185,7 @@ public class AddLocationPanel extends JPanel{
       System.out.println(newNearbyLoc2.equals("No location selected."));
       if(!newNearbyLoc2.equals("No location selected.")){
         try{
+          isSecondDest = true;
           //footer.setText("You have to enter at least one nearby location! try again");
           double locDist2 = Double.parseDouble(distField2.getText());
           //double timeDist1 = Double.parseDouble(timeField1.getText());
@@ -196,7 +200,9 @@ public class AddLocationPanel extends JPanel{
           System.out.println("You must enter valid input");
         }
       }
-      footer.setText("New Location \"" + l.toString() + "\" has been added to the map, along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + ".");
+      String footerText =  "New Location \"" + l.toString() + "\" has been added to the map,";
+       footerText += isSecondDest ? " along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + "." : " along with a path that leads to " + newNearbyLoc1;
+      footer.setText(footerText);
       }else{
          footer.setText("You have to enter at least one nearby location! try again");
       }
