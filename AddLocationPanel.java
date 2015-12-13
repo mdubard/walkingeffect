@@ -1,13 +1,3 @@
-/* 
- * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
- * Writer for this Class: Hannah Murphy
- * 
- * File name: AddLocationPanel.java
- * Date Created: 12/8/15
- * Last Updated: 12/12/15
- * 
- * Class that contains Panel elements for the Add Location tab of the Walking Effect GUI
- */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -25,7 +15,7 @@ public class AddLocationPanel extends JPanel{
   private JTextField locName, distField1, distField2, timeField1, timeField2;
   private JCheckBox hasHillsCheck1, hasStairsCheck1, hasHillsCheck2, hasStairsCheck2;
   private Map instanceMap;
-  private String[] locs;
+  private String[] locs, comboLocs;
   
   public AddLocationPanel(Map map){
     instanceMap = map;
@@ -57,11 +47,13 @@ public class AddLocationPanel extends JPanel{
     
     locs = instanceMap.getLocations();
     
-    //initialize combo boxes, using String array ratings for values
-    nearbyLoc1Combo = new JComboBox(locs);
+    comboLocs = instanceMap.getLocationsCombo();
+      //initialize combo boxes, using String array ratings for values
+    nearbyLoc1Combo = new JComboBox(comboLocs);
     nearbyLoc1Combo.setFont(keyFont);
-    nearbyLoc2Combo = new JComboBox(locs);
+    nearbyLoc2Combo = new JComboBox(comboLocs);
     nearbyLoc1Combo.setFont(keyFont);
+
     
     enterName = new JLabel("Name of New Location: ");
     enterName.setFont(customFont);
@@ -169,6 +161,7 @@ public class AddLocationPanel extends JPanel{
     //Initializes footer
     footer = new JLabel("", SwingConstants.CENTER);
     footer.setFont(customFont);
+
     
     //adds elements to frame
     add(header, BorderLayout.NORTH);
@@ -197,8 +190,11 @@ public class AddLocationPanel extends JPanel{
       footer.setText(s);
 */
       
-      try{
-        newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
+      newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
+      if(newNearbyLoc1 != "No location selected."){
+        try{
+          //footer.setText("You have to enter at least one nearby location! try again");
+        //newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
         double locDist1 = Double.parseDouble(distField1.getText());
         //double timeDist1 = Double.parseDouble(timeField1.getText());
         boolean hasHills1 = hasHillsCheck1.isSelected();
@@ -212,36 +208,39 @@ public class AddLocationPanel extends JPanel{
       }catch(NumberFormatException n){
         System.out.println("You must enter valid input");
       }
+      }else{
+         footer.setText("You have to enter at least one nearby location! try again");
+      }
       
-      
-      
-      try{
-        newNearbyLoc2 = nearbyLoc2Combo.getSelectedItem().toString();
-        double locDist2 = Double.parseDouble(distField2.getText());
-        //double timeDist1 = Double.parseDouble(timeField1.getText());
-        boolean hasHills2 = hasHillsCheck2.isSelected();
-        boolean hasStairs2 = hasStairsCheck2.isSelected();
-        
-        Path p = new Path(locDist2, hasStairs2, hasHills2);
-        instanceMap.addEdge(l, instanceMap.findLocation(newNearbyLoc2), p);
-      }catch(NullPointerException e){
-        System.out.println("You must enter valid input.");
-      }catch(NumberFormatException n){
-        System.out.println("You must enter valid input");
+      newNearbyLoc2 = nearbyLoc2Combo.getSelectedItem().toString();
+      if(newNearbyLoc2 != "No location selected."){
+        try{
+          //footer.setText("You have to enter at least one nearby location! try again");
+          double locDist2 = Double.parseDouble(distField2.getText());
+          //double timeDist1 = Double.parseDouble(timeField1.getText());
+          boolean hasHills2 = hasHillsCheck2.isSelected();
+          boolean hasStairs2 = hasStairsCheck2.isSelected();
+          
+          Path p = new Path(locDist2, hasStairs2, hasHills2);
+          instanceMap.addEdge(l, instanceMap.findLocation(newNearbyLoc2), p);
+        }catch(NullPointerException e){
+          System.out.println("You must enter valid input.");
+        }catch(NumberFormatException n){
+          System.out.println("You must enter valid input");
+        }
       }
       footer.setText("New Location \"" + l.toString() + "\" has been added to the map, along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + ".");
       
       locs = instanceMap.getLocations();
-    keyText.setText("");
-    keyText.append("Map Key: ");
-    keyText.setRows(1);
-    for(int i = 0; i < locs.length; i++){
-      keyText.append("\n");
-      keyText.append(locs[i]);
-    }
+      keyText.setText("");
+      keyText.append("Map Key: ");
+      keyText.setRows(1);
+      for(int i = 0; i < locs.length; i++){
+        keyText.append("\n");
+        keyText.append(locs[i]);
+      }
     }
     
     
   }
 }
-

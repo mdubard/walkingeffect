@@ -79,6 +79,22 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   }
   
   /******************************************************************
+   getLocations()
+   
+   returns string array of all Location names
+   Used to populate the Map Key text fields in the application GUI
+   ******************************************************************/
+  public String[] getLocationsCombo(){
+    
+    String[] locs = new String[n+1];
+    locs[0] = "No location selected."; 
+    for(int i = 1; i < n; i++){
+      locs[i] = locations[i].getName();
+    }
+    return locs;
+  }
+  
+  /******************************************************************
    getAllVertices()
    
    returns the array of Locations in the Map
