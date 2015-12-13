@@ -50,6 +50,7 @@ public class ExplorePanel extends JPanel{
     exploreButton.addActionListener(new ExploreButtonListener());
     
     header = new JLabel("Use this menu to learn more about the locations on Wellesley's campus.");
+    header.setAlignmentX(JLABEL.CENTER_ALIGNMENT);
     name = new JLabel ("You Selected" + chosenLocation.getName());
     
     locMenu = new JComboBox();
