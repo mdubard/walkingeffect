@@ -42,7 +42,7 @@ public class HomePanel extends JPanel implements ComponentListener{
     
     try {
       //create the font to use. Specify the size!
-      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(25f);
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
       customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
       keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -189,7 +189,7 @@ public class HomePanel extends JPanel implements ComponentListener{
         avoidHills = true;
       }
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString), avoidStairs, avoidHills));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }

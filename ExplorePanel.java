@@ -63,8 +63,7 @@ public class ExplorePanel extends JPanel implements ComponentListener{
     exploreButton.setMaximumSize(exploreButton.getPreferredSize());
     
 
-    header = new JLabel("Use this menu to learn more about the locations on Wellesley's campus.");
-    //header.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    header = new JLabel("Use this menu to learn more about the locations on Wellesley's campus.", SwingConstants.CENTER);
     header.setFont(headerFont);
          JPanel headerPanel = new JPanel();
     headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
