@@ -30,7 +30,7 @@ public class WalkingEffectGUI{
     HomePanel home = new HomePanel(map);
     AddLocationPanel addLoc = new AddLocationPanel(map);
     ExplorePanel ep = new ExplorePanel(map);
-    tp.addTab("About", new JScrollPane(about));
+    tp.addTab("About", about);
     tp.addTab("Home", new JScrollPane(home));
     tp.addTab("Add Location", new JScrollPane(addLoc));
     tp.addTab("Explore", new JScrollPane(ep));
@@ -41,7 +41,7 @@ public class WalkingEffectGUI{
     //adds tabbed panel to frame
     frame.getContentPane().add(tp);
     //sets size
-    frame.setPreferredSize(new Dimension(1500,1000));
+    frame.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
     //frame.setResizable(false);
     frame.pack();
     

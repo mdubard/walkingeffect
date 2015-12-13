@@ -69,7 +69,7 @@ public class HomePanel extends JPanel implements ComponentListener{
       //create the font to use. Specify the size!
       headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
       customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
-      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
+      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(17f);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       //register the font
       ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
@@ -92,10 +92,6 @@ public class HomePanel extends JPanel implements ComponentListener{
     orig.setFont(keyFont);
     dest = new JComboBox(locs);
     dest.setFont(keyFont);
-    stairs = new JCheckBox("Avoid Stairs");
-    stairs.setFont(keyFont);
-    steep = new JCheckBox("Avoid Hills");
-    steep.setFont(keyFont);
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
@@ -118,8 +114,6 @@ public class HomePanel extends JPanel implements ComponentListener{
     navi.add(Box.createRigidArea(new Dimension(0, 50)));
     navi.add(destination);
     navi.add(dest);
-    navi.add(stairs);
-    navi.add(steep);
     navi.add(Box.createRigidArea(new Dimension(0, 100)));
     navi.add(submit);
     navi.add(Box.createRigidArea (new Dimension (0, 100)));
@@ -171,8 +165,8 @@ public class HomePanel extends JPanel implements ComponentListener{
     StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
     doc.setParagraphAttributes(0, doc.getLength(), center, false);
     
-    JScrollPane jp2 = new JScrollPane(directions);
-    jp2.setMaximumSize(directions.getPreferredSize());
+    //JScrollPane jp2 = new JScrollPane(directions);
+    //jp2.setMaximumSize(directions.getPreferredSize());
     
     //adds elements to frame
     add(header, BorderLayout.NORTH);
@@ -201,20 +195,8 @@ public class HomePanel extends JPanel implements ComponentListener{
       //save combo box values as a string, if no value was chosen, the default value is 1
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
-      String stairsString = "Stairs an option. ";
-      String hills = "Hills an option. ";
-      boolean avoidStairs = false;
-      boolean avoidHills = false;
-      if(stairs.isSelected()){
-        stairsString = "Stairs not an option. ";
-        avoidStairs = true;
-      }
-      if(steep.isSelected()){
-        hills = "Hills not an option. ";
-        avoidHills = true;
-      }
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }
