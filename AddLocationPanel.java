@@ -182,7 +182,8 @@ public class AddLocationPanel extends JPanel{
       //footer.setText("Yo");
       
       //save combo box values as a string, if no value was chosen, the default value is 1
-      String newLocName = locName.getText();
+      String newLocName = "(" + (instanceMap.n() + 1) + ") " + locName.getText();
+      
       Location l = new Location(newLocName);
       footer.setText(newLocName);
       instanceMap.addVertex(l);
