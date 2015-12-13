@@ -6,11 +6,7 @@
  * Date Created: 12/8/15
  * Last Updated: 12/12/15
  * 
-<<<<<<< HEAD
  * Creates an instance of a Map Object, which provides the finctionality for the map represented in WalkingEffectGUI.java
-=======
- * Class that represents the Map. Uses Locations and Path
->>>>>>> origin/master
  */
 
 import java.io.File;
@@ -318,6 +314,39 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     return src != NOT_FOUND && dest != NOT_FOUND && isArc(src, dest) && isArc(dest, src);
   }
   
+  /******************************************************************
+    hillsExist()
+    
+    returns true if a path contains hills
+    ******************************************************************/
+  public boolean hillsExist(int srcVertex, int destVertex) {
+   Path p = getPath(srcVertex, destVertex);
+   return p.hasHills();
+  }
+  
+  /******************************************************************
+    stairsExist()
+    
+    returns true if a path contains stairs
+    ******************************************************************/
+  public boolean stairsExist(int src, int dest) {
+   Path p = getPath(src, dest);
+   return p.hasStairs();
+  }
+  
+   /******************************************************************
+    getPath()
+    
+    returns the path object between the specified locations
+    ******************************************************************/
+  public Path getPath(int src, int dest) {
+    //int src = getIndex(srcVertex);
+    //int dest = getIndex(destVertex);
+    if(isArc(src, dest)){
+      return paths[src][dest];
+    }
+       return null;
+       }
   
   /******************************************************************
     removeEdge() 
@@ -604,17 +633,41 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    Calls getDirections() to get the integer representaion, then retrieves the names of the locaions
    ******************************************************************/
   public String directionsString(Location orig, Location dest){
+    boolean hasStairs = false;
+    boolean hasHills = false;
+    if(orig.equals(dest))
+      return "You're already there! Check out the Explore panel to get more information.";
     int[] directions = getDirections(orig, dest);
     LinkedStack<String> names = new LinkedStack<String>();
     int temp = getIndex(dest);
+    System.out.println("temp (outside loop): " + temp);
     while(temp!= -1){
-      names.push(getVertex(temp).getName());
+      names.push(getVertex(temp).getName());//push the temp index into the list
+      System.out.println("Pushed into List: " + getVertex(temp).getName());
+      int previous = temp;
       temp = directions[temp];
+      System.out.println("temp (inside loop): " + temp);
+      if(previous != -1 && temp != -1){
+      if(stairsExist(previous, temp))
+        hasStairs = true;
+      if(hillsExist(previous, temp))
+        hasHills = true;
+      //System.out.println("Checking path between temp and previous " + previous + getVertex(temp));
+      }
     }
     String result = "";
     while(!names.isEmpty()){
       result+= names.pop() + "\t";
     }
+    
+    if(hasStairs && hasHills)
+      result += " This path contains stairs and hills.";
+    else if(hasHills)
+      result += " This path contains hills.";
+    else if(hasStairs)
+      result += " This path contains stairs.";
+    else
+      result += " This path does not contain stairs or hills.";
     return result;
   }
   
