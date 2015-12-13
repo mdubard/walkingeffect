@@ -161,7 +161,7 @@ public class HomePanel extends JPanel implements ComponentListener{
     map.add(jp);
     
     
-    //Initializes directions
+    //Initializes footer
     directions = new JTextPane();
     directions.setEditable(false);
     directions.setText("<Directions here>");
@@ -178,7 +178,7 @@ public class HomePanel extends JPanel implements ComponentListener{
     add(header, BorderLayout.NORTH);
     add(navi, BorderLayout.WEST);
     add(map, BorderLayout.EAST);
-    add(jp2, BorderLayout.SOUTH);
+    add(directions, BorderLayout.SOUTH);
     
   }
   
