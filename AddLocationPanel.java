@@ -17,6 +17,12 @@ public class AddLocationPanel extends JPanel{
   private Map instanceMap;
   private String[] locs, comboLocs;
   
+  public void setKeyText(){
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+  }
   public AddLocationPanel(Map map){
     instanceMap = map;
     setLayout (new BorderLayout());
@@ -214,6 +220,7 @@ public class AddLocationPanel extends JPanel{
         keyText.append("\n");
         keyText.append(locs[i]);
       }
+      HomePanel.setKeyText(locs);
     }
     
     

@@ -23,12 +23,23 @@ public class HomePanel extends JPanel implements ComponentListener{
   private JPanel navi, map;
   private JComboBox orig, dest;
   private JButton submit;
-  private JTextArea keyText;
+  private static JTextArea keyText;
   private JTextPane directions;
   private String[] locs;
   private Map m;
   private JCheckBox stairs;
   private JCheckBox steep;
+  
+  public static void setKeyText(String[] locs){
+    keyText.setText("");
+    keyText.append("Map Key: ");
+    //keyText.setRows(1);
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+    //keyText.setFont(keyFont);
+  }
   
   public HomePanel(Map ma){
     //on load reload locs?
@@ -122,7 +133,7 @@ public class HomePanel extends JPanel implements ComponentListener{
     
     keyText = new JTextArea(12, 20);
     keyText.setMaximumSize(keyText.getPreferredSize());
-    keyText.setEditable(false);
+    //keyText.setEditable(false);
     keyText.append("Map Key: ");
     //keyText.setRows(1);
     for(int i = 0; i < locs.length; i++){
