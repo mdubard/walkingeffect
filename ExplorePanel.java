@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 public class ExplorePanel extends JPanel{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
+  private JLabel nameBold, aboutBold;
   private JTextArea about, keyText;
   private JScrollPane aboutScroll, bottomScroll;
   private JComboBox locMenu;
@@ -30,38 +31,67 @@ public class ExplorePanel extends JPanel{
   
   
   public ExplorePanel(Map m){ //pass in Map from GUI driver
-    /*//testing
-    map = m;
-    Location a = new Location("A", "The letter A", "wellesleylogo.png");
-    Location b = new Location ("B", "the letter B", "bTest.jpeg");
-    map.addVertex(a);
-    map.addVertex(b);
-    map.addEdge(a, b, new Path(2, false, false));*/
-    chosenLocation = new Location (" ");
+    
     //get location information (from Map passed in)
     map = m;
     locations = map.getAllVertices();
     
-    
-    
     //initialize everything
+    chosenLocation = new Location (" ");
+    
+     Font headerFont = null;
+    Font defaultFont = null;
+   Font  boldFont = null;
+   Font keyFont = null;
+    
+    try{
+    headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
+    defaultFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
+    boldFont = Font.createFont(Font.TRUETYPE_FONT, new File ("fontBold.ttf")).deriveFont(20f);
+    keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(17f);
+    } catch (FontFormatException e){
+    System.out.println ("font format exception");
+    } catch (IOException i){
+      System.out.println("io exception");
+    }
+    
     
     exploreButton = new JButton("Explore!");
     exploreButton.addActionListener(new ExploreButtonListener());
+    exploreButton.setFont(defaultFont);
+        exploreButton.setPreferredSize(new Dimension (150, 50));
+    exploreButton.setMaximumSize(exploreButton.getPreferredSize());
     
+
     header = new JLabel("Use this menu to learn more about the locations on Wellesley's campus.");
-    header.setAlignmentX(JLABEL.CENTER_ALIGNMENT);
-    name = new JLabel ("You Selected" + chosenLocation.getName());
+    //header.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    header.setFont(headerFont);
+         JPanel headerPanel = new JPanel();
+    headerPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+    headerPanel.add(Box.createRigidArea (new Dimension (5, 80)));
+    headerPanel.add(header);
+    headerPanel.add(Box.createRigidArea (new Dimension (5, 40)));
+    
+    
+    nameBold = new JLabel("You Selected");
+    nameBold.setFont(boldFont);
+    name = new JLabel ( chosenLocation.getName());
+    name.setFont(defaultFont);
     
     locMenu = new JComboBox();
-    //locMenu.setPreferredSize(new Dimension (50, 100));
+    locMenu.setFont(keyFont);
+    locMenu.setPreferredSize(new Dimension (150, 50));
+    locMenu.setMaximumSize(locMenu.getPreferredSize());
     
     locMenu.addItem("Select a Location");
     for(int i = 0; i < map.n(); i++){
       locMenu.addItem(locations[i].getName());
     }
     
-    about = new JTextArea("About " + chosenLocation.getAbout());
+    aboutBold = new JLabel ("About: ");
+    aboutBold.setFont(boldFont);
+    about = new JTextArea(chosenLocation.getAbout());
+    about.setFont(defaultFont);
     about.setPreferredSize(new Dimension(500, 100));
     about.setColumns(25);
     about.setMaximumSize(about.getPreferredSize());
@@ -73,11 +103,11 @@ public class ExplorePanel extends JPanel{
     //layout manager, addeverything
     JPanel leftPanel = new JPanel();
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-    leftPanel.add(Box.createRigidArea (new Dimension (5, 70)));
-    leftPanel.add(locMenu);
-    leftPanel.add(Box.createRigidArea (new Dimension (5, 30)));
-    leftPanel.add(exploreButton);
     leftPanel.add(Box.createRigidArea (new Dimension (5, 80)));
+    leftPanel.add(locMenu);
+    leftPanel.add(Box.createRigidArea (new Dimension (5, 40)));
+    leftPanel.add(exploreButton);
+    leftPanel.add(Box.createRigidArea (new Dimension (5, 120)));
     
     JPanel rightPanel = new JPanel();
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.X_AXIS));
@@ -89,7 +119,7 @@ public class ExplorePanel extends JPanel{
       Image img = pic.getImage();
       BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
       Graphics g = bi.createGraphics();
-      g.drawImage(img, 100, 50, 500, 350, null); //locates and sizes image
+      g.drawImage(img, 100, 50, 400, 280, null); //locates and sizes image
       ImageIcon newIcon = new ImageIcon(bi);
       JLabel picLabel = new JLabel(newIcon);  //adds image to label
       rightPanel.add(picLabel); //adds label to panel
@@ -98,6 +128,7 @@ public class ExplorePanel extends JPanel{
       System.out.println(io);
     }
     keyText = new JTextArea(12, 20);
+    keyText.setFont(keyFont);
     keyText.setEditable(false);
     keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
@@ -115,7 +146,9 @@ public class ExplorePanel extends JPanel{
     
     JPanel bottomPanel = new JPanel();
     bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(nameBold, BorderLayout.NORTH);
     bottomPanel.add(name, BorderLayout.NORTH);
+        bottomPanel.add(aboutBold, BorderLayout.WEST);
     bottomPanel.add(about, BorderLayout.WEST);
     //  try{
     ImageIcon pic = new ImageIcon(chosenLocation.getPic());
@@ -132,6 +165,7 @@ public class ExplorePanel extends JPanel{
     
     //add picture to bottom panel
     this.setLayout (new BorderLayout());
+    this.add(Box.createRigidArea(new Dimension(100, 10)), BorderLayout.NORTH);
     this.add(header, BorderLayout.NORTH);
     this.add(leftPanel, BorderLayout.WEST);
     this.add(rightPanel, BorderLayout.EAST);
