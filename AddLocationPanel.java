@@ -211,4 +211,3 @@ public class AddLocationPanel extends JPanel{
     
   }
 }
-
