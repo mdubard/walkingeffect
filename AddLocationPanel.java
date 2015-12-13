@@ -136,7 +136,7 @@ public class AddLocationPanel extends JPanel{
     mapPic.add(jp);
     
     //Initializes footer
-    footer = new JLabel("<Directions here>", SwingConstants.CENTER);
+    footer = new JLabel("", SwingConstants.CENTER);
     footer.setFont(new Font("Courier New", Font.PLAIN, 16));
     
     //adds elements to frame
