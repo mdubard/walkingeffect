@@ -15,7 +15,7 @@ public class AddLocationPanel extends JPanel{
   private JTextField locName, distField1, distField2, timeField1, timeField2;
   private JCheckBox hasHillsCheck1, hasStairsCheck1, hasHillsCheck2, hasStairsCheck2;
   private Map instanceMap;
-  private String[] locs;
+  private String[] locs, comboLocs;
   
   public AddLocationPanel(Map map){
     instanceMap = map;
@@ -26,9 +26,10 @@ public class AddLocationPanel extends JPanel{
     
     locs = instanceMap.getLocations();
     
-    //initialize combo boxes, using String array ratings for values
-    nearbyLoc1Combo = new JComboBox(locs);
-    nearbyLoc2Combo = new JComboBox(locs);
+    comboLocs = instanceMap.getLocationsCombo();
+      //initialize combo boxes, using String array ratings for values
+    nearbyLoc1Combo = new JComboBox(comboLocs);
+    nearbyLoc2Combo = new JComboBox(comboLocs);
     
     enterName = new JLabel("Name of new Location");
     enterName.setFont(new Font("Courier New", Font.PLAIN, 15));

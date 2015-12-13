@@ -18,7 +18,7 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class ExplorePanel extends JPanel{
+public class ExplorePanel extends JPanel implements ComponentListener{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
   private JLabel nameBold, aboutBold;
@@ -31,10 +31,9 @@ public class ExplorePanel extends JPanel{
   
   
   public ExplorePanel(Map m){ //pass in Map from GUI driver
-    Location a = new Location("A", "The letter A", "wellesleylogo.png");
     
     //get location information (from Map passed in)
-    //map = m;
+    map = m;
     locations = map.getAllVertices();
     
     //initialize everything
@@ -171,6 +170,19 @@ public class ExplorePanel extends JPanel{
     this.add(rightPanel, BorderLayout.EAST);
     this.add(new JScrollPane(bottomPanel), BorderLayout.SOUTH); 
   }
+  
+  public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    //rewrite the key when tab shown again
+    public void componentShown(ComponentEvent e){
+          locations = map.getAllVertices();
+      keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
+      for(int i = 0; i < locations.length; i++){
+        keyText.append("\n");
+        keyText.append(locations[i].getName());
+      }
+    }
   
   private class ExploreButtonListener implements ActionListener{
     public void actionPerformed(ActionEvent e){
