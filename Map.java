@@ -632,6 +632,7 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    Returns a string representation of the directions from one location to another.
    Calls getDirections() to get the integer representaion, then retrieves the names of the locaions
    ******************************************************************/
+
   public String directionsString(Location orig, Location dest){
     boolean hasStairs = false;
     boolean hasHills = false;
