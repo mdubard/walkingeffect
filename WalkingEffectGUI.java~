@@ -23,25 +23,7 @@ public class WalkingEffectGUI{
     JTabbedPane tp = new JTabbedPane();
     
     //creates Map object
-    Map map = new Map();
-    
-    Location lulu = new Location("Lulu");
-    Location lib = new Location("Library");
-    Location resQ = new Location("Res Quad");
-    Location sciCen = new Location("Science Center");
-    Location acaQ = new Location("Acad Quad");
-    
-    map.addVertex(lulu);
-    map.addVertex(lib);
-    map.addVertex(resQ);
-    map.addVertex(sciCen);
-    map.addVertex(acaQ);
-    
-    map.addEdge(lulu, acaQ, new Path(4, false, false));
-    map.addEdge(lib, acaQ, new Path(4, false, false));
-    map.addEdge(lulu, resQ, new Path(4, false, false));
-    map.addEdge(resQ, sciCen, new Path(8, false, false));
-    map.addEdge(lib, sciCen, new Path(5, false, false));
+    Map map = new WellesleyMap();
     
     //adds three tabs
     HomePanel home = new HomePanel(map); //will pass map into home

@@ -2,11 +2,11 @@
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
  * Writer for this Class: Hannah Murphy
  * 
- * File name: WalkingEffectGUI.java
+ * File name: Map.java
  * Date Created: 12/8/15
  * Last Updated: 12/10/15
  * 
- * Class that creates the Walking Effect GUI
+ * Class that represents the Map. Uses Locations and Path
  */
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -428,8 +428,10 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
    * getDirections(Location a, Location b)
    * Returns directions for shortest path between a and b
    **/ 
-  public int[] getDirections(Location orig, Location dest){
-    //double[] tempDistances = new double[n]; //array to store calculated shortest distance to node from origin
+  public int[] getDirections(Location orig, Location dest, boolean avoidStairs, boolean avoidHills){
+    //if avoidStairs is true, don't go down paths with stairs. same with avoid hills
+    //need case for no path available
+
     PriorityQueue<Location> q = new PriorityQueue<Location>(); //a priority queue that prioritizes by distance from origin
     int[] previous = new int[n]; //stores index of node visited before each node ie if previous[3] = 1, then we traveled from node 1 to node 3
     
@@ -496,8 +498,8 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     return arcs[getIndex(a)][getIndex(b)].getDistance();
   }
   
-  public String directionsString(Location orig, Location dest){
-    int[] directions = getDirections(orig, dest);
+  public String directionsString(Location orig, Location dest, boolean avoidStairs, boolean avoidHills){
+    int[] directions = getDirections(orig, dest, avoidStairs, avoidHills);
     LinkedStack<String> names = new LinkedStack<String>();
     int temp = getIndex(dest);
     while(temp!= -1){
@@ -570,13 +572,13 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     m.addEdge(c, e, new Path(5, true, true));
     m.addEdge(d, e, new Path(1, true, true));
     
-    int[] test = m.getDirections(a, e);
+    int[] test = m.getDirections(a, e, false, false);
     for(int i = 0; i < test.length; i++){
       System.out.print(test[i] + "|");
     }
     
-    System.out.println("\n" + m.directionsString(a, e));
-    System.out.println("\n" + m.directionsString(a, b));
+    System.out.println("\n" + m.directionsString(a, e, false, false));
+    System.out.println("\n" + m.directionsString(a, b, false, false));
   }
   
 }

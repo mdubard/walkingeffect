@@ -4,7 +4,7 @@
  * 
  * File name: HomePanel.java
  * Date Created: 12/8/15
- * Last Updated: 12/8/15
+ * Last Updated: 12/13/15
  * 
  * Class that contains Panel elements for the Home tab of the Walking Effect GUI
  */
@@ -18,7 +18,7 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class HomePanel extends JPanel{
+public class HomePanel extends JPanel implements ComponentListener{
   private JLabel header, origin, destination, footer;
   private JPanel navi, map;
   private JComboBox orig, dest;
@@ -35,28 +35,53 @@ public class HomePanel extends JPanel{
     m = ma;
     setLayout (new BorderLayout());
     
+    //set font to default as helvetica
+    Font headerFont = new Font("Helvetica", Font.PLAIN, 18);
+    Font customFont = new Font("Helvetica", Font.PLAIN, 15);
+    Font keyFont = new Font("Helvetica", Font.PLAIN, 13);
+    
+    try {
+      //create the font to use. Specify the size!
+      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
+      customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
+      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      //register the font
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    catch(FontFormatException e)
+    {
+      e.printStackTrace();
+    }
+    
+    
     header = new JLabel("\nPick your origin and destination below to receive the quickest path between them!", SwingConstants.CENTER);
-    header.setFont(new Font("Courier New", Font.PLAIN, 16));
+    header.setFont(headerFont);
     
     locs = m.getLocations(); 
-    //^^will be taken from Map object
     
     //initialize combo boxes, using String array ratings for values
     orig = new JComboBox(locs);
+    orig.setFont(keyFont);
     dest = new JComboBox(locs);
+    dest.setFont(keyFont);
     stairs = new JCheckBox("Avoid Stairs");
+    stairs.setFont(keyFont);
     steep = new JCheckBox("Avoid Hills");
+    steep.setFont(keyFont);
     
     //initializes labels for combo boxes
     origin = new JLabel("Origin: ");
-    origin.setFont(new Font("Helvetica", Font.PLAIN, 15));
+    origin.setFont(customFont);
     destination = new JLabel("Destination: ");
-    destination.setFont(new Font("Helvetica Light", Font.PLAIN, 15));
+    destination.setFont(customFont);
     
     //creates submit button
     submit = new JButton("Submit");
     submit.addActionListener(new submitListener());
-    submit.setFont(new Font("Courier New", Font.PLAIN, 12));
+    submit.setFont(customFont);
     
     //Creates panel for navigation options
     navi = new JPanel();
@@ -104,16 +129,18 @@ public class HomePanel extends JPanel{
       keyText.append("\n");
       keyText.append(locs[i]);
     }
+    keyText.setFont(keyFont);
     
     JScrollPane jp = new JScrollPane(keyText);
     jp.setMaximumSize(keyText.getPreferredSize());
     map.add(jp);
     
+    
     //Initializes footer
     directions = new JTextPane();
     directions.setEditable(false);
     directions.setText("<Directions here>");
-    directions.setFont(new Font("Courier New", Font.PLAIN, 16));
+    directions.setFont(customFont);
     StyledDocument doc = directions.getStyledDocument();
     SimpleAttributeSet center = new SimpleAttributeSet();
     StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -127,7 +154,22 @@ public class HomePanel extends JPanel{
     add(navi, BorderLayout.WEST);
     add(map, BorderLayout.EAST);
     add(directions, BorderLayout.SOUTH);
+    
   }
+  
+  public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    //rewrite the key when tab shown again
+    public void componentShown(ComponentEvent e){
+    locs = m.getLocations(); 
+      keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
+      //keyText.setRows(1);
+      for(int i = 0; i < locs.length; i++){
+        keyText.append("\n");
+        keyText.append(locs[i]);
+      }
+    }
   
   private class submitListener implements ActionListener{
     public void actionPerformed(ActionEvent event){
@@ -136,13 +178,18 @@ public class HomePanel extends JPanel{
       String destString = dest.getSelectedItem().toString();
       String stairsString = "Stairs an option. ";
       String hills = "Hills an option. ";
-      if(stairs.isSelected())
+      boolean avoidStairs = false;
+      boolean avoidHills = false;
+      if(stairs.isSelected()){
         stairsString = "Stairs not an option. ";
-      if(steep.isSelected())
+        avoidStairs = true;
+      }
+      if(steep.isSelected()){
         hills = "Hills not an option. ";
+        avoidHills = true;
+      }
       
       directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
-      //add getDirections(origString, destString) to footer
     }
   }
 }
