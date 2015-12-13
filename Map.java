@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.text.DecimalFormat;
 import javafoundations.*;
 
 
@@ -29,6 +30,8 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
   public static final int NOT_FOUND = -1;
   private static final int DEFAULT_CAPACITY = 1;
   private final int INFINITY = 1000000;
+  private final double WALKING_MPH = 3.1;
+  private final int MIN_IN_HOUR = 60;
   
   /******************************************************************* 
     Map()
@@ -657,13 +660,13 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     int[] directions = getDirections(orig, dest);
     LinkedStack<String> names = new LinkedStack<String>();
     int temp = getIndex(dest);
-    System.out.println("temp (outside loop): " + temp);
+    //System.out.println("temp (outside loop): " + temp);
     while(temp!= -1){
       names.push(getVertex(temp).getName());//push the temp index into the list
-      System.out.println("Pushed into List: " + getVertex(temp).getName());
+      //System.out.println("Pushed into List: " + getVertex(temp).getName());
       int previous = temp;
       temp = directions[temp];
-      System.out.println("temp (inside loop): " + temp);
+      //System.out.println("temp (inside loop): " + temp);
       if(previous != -1 && temp != -1){
       if(stairsExist(previous, temp))
         hasStairs = true;
@@ -672,14 +675,20 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       //System.out.println("Checking path between temp and previous " + previous + getVertex(temp));
       }
     }
+    
+    double distance = 0;
+    
     String result = "Exit ";
+    String loc1 = names.pop();
     while(!names.isEmpty()){
-      String tempLocation = names.pop();
-      if(!tempLocation.equals(dest.getName()))
-        result+= tempLocation + ". \nWalk towards: ";
-      else
-        result+= tempLocation + ". \nYou have arrived!";
+      String loc2 = names.pop();
+      distance += getPath(getIndex(findLocation(loc1)), getIndex(findLocation(loc2))).getDistance();
+      result+= loc1 + ". \nWalk towards: ";
+      if(loc2.equals(dest.getName()))
+        result+= loc2 + ". \nYou have arrived!";
+      loc1 = loc2;
     }
+    result += "\nYour trip is " + roundTwoDecimals(distance) + " miles and approximately " + calculateTime(distance) + " minutes.";
     
     if(hasStairs && hasHills)
       result += " \nThis path contains stairs and hills.";
@@ -691,6 +700,15 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
       result += " \nThis path does not contain stairs or hills.";
     return result;
   }
+  
+  private double calculateTime(double distance){
+    return roundTwoDecimals(distance * MIN_IN_HOUR / WALKING_MPH);
+  }
+  
+  private double roundTwoDecimals(double d) {
+    DecimalFormat twoDForm = new DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(d));
+}
   
   
   ////////////////////UNSUPPORTED METHODS///////////////////////

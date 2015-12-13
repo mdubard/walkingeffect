@@ -201,7 +201,7 @@ public class AddLocationPanel extends JPanel{
         try{
           //footer.setText("You have to enter at least one nearby location! try again");
         //newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
-        if(distField2.getText().equals("")){
+        if(!distField1.getText().equals("")){
         isFirstDest = true;
         double locDist1 = Double.parseDouble(distField1.getText());
         //double timeDist1 = Double.parseDouble(timeField1.getText());
@@ -230,7 +230,7 @@ public class AddLocationPanel extends JPanel{
         try{
           isSecondDest = true;
           //footer.setText("You have to enter at least one nearby location! try again");
-          if(distField2.getText().equals("")){
+          if(!distField2.getText().equals("")){
           double locDist2 = Double.parseDouble(distField2.getText());
           //double timeDist1 = Double.parseDouble(timeField1.getText());
           boolean hasHills2 = hasHillsCheck2.isSelected();

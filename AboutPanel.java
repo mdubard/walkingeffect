@@ -71,7 +71,7 @@ public class AboutPanel extends JPanel{
       Image img = pic.getImage();
       BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
       Graphics g = bi.createGraphics();
-      g.drawImage(img, 350, 0, 500, 250, null); //locates and sizes image
+      g.drawImage(img, 375, 0, 500, 250, null); //locates and sizes image
       ImageIcon newIcon = new ImageIcon(bi);
       JLabel picLabel = new JLabel(newIcon);  //adds image to label
       picPanel.add(picLabel); //adds label to panel

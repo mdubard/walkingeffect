@@ -40,7 +40,7 @@ public class WalkingEffectGUI{
     
     //adds tabbed panel to frame
     frame.getContentPane().add(tp);
-    //sets size
+    //sets size to screen size
     frame.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
     //frame.setResizable(false);
     frame.pack();

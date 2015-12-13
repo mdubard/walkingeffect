@@ -196,7 +196,7 @@ public class HomePanel extends JPanel implements ComponentListener{
       String origString = orig.getSelectedItem().toString();
       String destString = dest.getSelectedItem().toString();
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
+      directions.setText("Directions from " + origString + " to " + destString + ": " + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }
