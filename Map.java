@@ -88,8 +88,8 @@ public class Map implements Graph<Location>{//, Iterator<Location>{
     
     String[] locs = new String[n+1];
     locs[0] = "No location selected."; 
-    for(int i = 1; i < n; i++){
-      locs[i] = locations[i].getName();
+    for(int i = 1; i <= n; i++){
+      locs[i] = locations[i-1].getName();
     }
     return locs;
   }

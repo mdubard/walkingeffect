@@ -16,11 +16,27 @@ import javax.swing.event.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import javax.media.*;
+import java.net.URL;
+import java.applet.*;
 
 public class AboutPanel extends JPanel{
-  JLabel header;
+  JLabel header, footer;
   
   public AboutPanel(){
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    
+    Applet app = new Applet();
+    AudioClip song = new AudioClip();
+    try{
+      song = app.getAudioClip((new File("500miles.wav").toURI().toURL()));
+    }
+    catch(Exception url){
+      System.out.println(url);
+    }
+    
+    song.play();
+    
     //set font to default as helvetica
     Font headerFont = new Font("Helvetica", Font.PLAIN, 20);
     Font customFont = new Font("Helvetica", Font.PLAIN, 15);
@@ -61,7 +77,13 @@ public class AboutPanel extends JPanel{
       System.out.println(io);
     }
     
+    footer = new JLabel("'Everywhere is within walking distance if you have the time.' -Steven Wright", SwingConstants.CENTER);
+    footer.setFont(headerFont);
+    
     add(header);
     add(picPanel);
+    add(footer);
   }
+  
+  
 }

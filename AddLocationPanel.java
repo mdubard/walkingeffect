@@ -232,7 +232,7 @@ public class AddLocationPanel extends JPanel{
         }
       }
       String footerText =  "New Location \"" + l.toString() + "\" has been added to the map,";
-       footerText += isSecondDest ? " along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + "." : " along with a path that leads to " + newNearbyLoc1;
+      footerText += isSecondDest ? " along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + "." : " along with a path that leads to " + newNearbyLoc1;
       footer.setText(footerText);
       }else{
          footer.setText("You have to enter at least one nearby location! try again");
