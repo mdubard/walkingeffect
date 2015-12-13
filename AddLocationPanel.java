@@ -175,12 +175,12 @@ public class AddLocationPanel extends JPanel{
       }catch(NumberFormatException n){
         System.out.println("You must enter valid input");
       }
-      }else{
-         footer.setText("You have to enter at least one nearby location! try again");
-      }
+      
+      
       
       newNearbyLoc2 = nearbyLoc2Combo.getSelectedItem().toString();
-      if(newNearbyLoc2 != "No location selected."){
+      System.out.println(newNearbyLoc2.equals("No location selected."));
+      if(!newNearbyLoc2.equals("No location selected.")){
         try{
           //footer.setText("You have to enter at least one nearby location! try again");
           double locDist2 = Double.parseDouble(distField2.getText());
@@ -197,7 +197,9 @@ public class AddLocationPanel extends JPanel{
         }
       }
       footer.setText("New Location \"" + l.toString() + "\" has been added to the map, along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + ".");
-      
+      }else{
+         footer.setText("You have to enter at least one nearby location! try again");
+      }
       locs = instanceMap.getLocations();
       keyText.setText("");
       keyText.append("Map Key: ");
