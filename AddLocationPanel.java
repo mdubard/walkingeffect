@@ -158,7 +158,7 @@ public class AddLocationPanel extends JPanel{
 */
       
       newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
-      if(newNearbyLoc1 != "No location selected."){
+      if(!newNearbyLoc1.equals("No location selected.")){
         try{
           //footer.setText("You have to enter at least one nearby location! try again");
         //newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
