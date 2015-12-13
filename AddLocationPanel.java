@@ -17,6 +17,12 @@ public class AddLocationPanel extends JPanel{
   private Map instanceMap;
   private String[] locs, comboLocs;
   
+  public void setKeyText(){
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+  }
   public AddLocationPanel(Map map){
     instanceMap = map;
     setLayout (new BorderLayout());
@@ -232,7 +238,10 @@ public class AddLocationPanel extends JPanel{
         }
       }
       String footerText =  "New Location \"" + l.toString() + "\" has been added to the map,";
-      footerText += isSecondDest ? " along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + "." : " along with a path that leads to " + newNearbyLoc1;
+       footerText += isSecondDest ? " along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + "." : " along with a path that leads to " + newNearbyLoc1;
+
+   
+
       footer.setText(footerText);
       }else{
          footer.setText("You have to enter at least one nearby location! try again");
@@ -245,8 +254,11 @@ public class AddLocationPanel extends JPanel{
         keyText.append("\n");
         keyText.append(locs[i]);
       }
+      HomePanel.setKeyText(locs);
     }
     
     
   }
+}
+
 }
