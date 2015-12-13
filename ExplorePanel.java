@@ -128,7 +128,6 @@ public class ExplorePanel extends JPanel implements ComponentListener{
     }
     keyText = new JTextArea(12, 20);
     keyText.setFont(keyFont);
-    keyText.setEditable(false);
     keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
     keyText.append("Map Key: ");
