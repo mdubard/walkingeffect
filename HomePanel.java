@@ -4,7 +4,7 @@
  * 
  * File name: HomePanel.java
  * Date Created: 12/8/15
- * Last Updated: 12/8/15
+ * Last Updated: 12/13/15
  * 
  * Class that contains Panel elements for the Home tab of the Walking Effect GUI
  */
@@ -18,7 +18,7 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class HomePanel extends JPanel{
+public class HomePanel extends JPanel implements ComponentListener{
   private JLabel header, origin, destination, footer;
   private JPanel navi, map;
   private JComboBox orig, dest;
@@ -154,7 +154,22 @@ public class HomePanel extends JPanel{
     add(navi, BorderLayout.WEST);
     add(map, BorderLayout.EAST);
     add(directions, BorderLayout.SOUTH);
+    
   }
+  
+  public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    //rewrite the key when tab shown again
+    public void componentShown(ComponentEvent e){
+    locs = m.getLocations(); 
+      keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
+      //keyText.setRows(1);
+      for(int i = 0; i < locs.length; i++){
+        keyText.append("\n");
+        keyText.append(locs[i]);
+      }
+    }
   
   private class submitListener implements ActionListener{
     public void actionPerformed(ActionEvent event){

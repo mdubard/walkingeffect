@@ -18,7 +18,7 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class ExplorePanel extends JPanel{
+public class ExplorePanel extends JPanel implements ComponentListener{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
   private JLabel nameBold, aboutBold;
@@ -67,7 +67,7 @@ public class ExplorePanel extends JPanel{
     //header.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     header.setFont(headerFont);
          JPanel headerPanel = new JPanel();
-    headerPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+    headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
     headerPanel.add(Box.createRigidArea (new Dimension (5, 80)));
     headerPanel.add(header);
     headerPanel.add(Box.createRigidArea (new Dimension (5, 40)));
@@ -171,6 +171,19 @@ public class ExplorePanel extends JPanel{
     this.add(rightPanel, BorderLayout.EAST);
     this.add(new JScrollPane(bottomPanel), BorderLayout.SOUTH); 
   }
+  
+  public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    //rewrite the key when tab shown again
+    public void componentShown(ComponentEvent e){
+          locations = map.getAllVertices();
+      keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
+      for(int i = 0; i < locations.length; i++){
+        keyText.append("\n");
+        keyText.append(locations[i].getName());
+      }
+    }
   
   private class ExploreButtonListener implements ActionListener{
     public void actionPerformed(ActionEvent e){
