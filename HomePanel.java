@@ -162,14 +162,12 @@ public class HomePanel extends JPanel implements ComponentListener{
     public void componentResized(ComponentEvent e){}
     //rewrite the key when tab shown again
     public void componentShown(ComponentEvent e){
-      
     locs = m.getLocations(); 
       keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
       //keyText.setRows(1);
       for(int i = 0; i < locs.length; i++){
         keyText.append("\n");
-        keyText.append(locs[i].toString());
-        System.out.println(locs[i].toString());
+        keyText.append(locs[i]);
       }
     }
   
