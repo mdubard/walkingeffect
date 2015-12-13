@@ -12,88 +12,53 @@ public class AddLocationPanel extends JPanel{
   private JComboBox nearbyLoc1Combo, nearbyLoc2Combo;
   private JButton add;
   private JTextArea keyText;
-  private JTextField locN, distField1, distField2, timeField1, timeField2;
+  private JTextField locName, distField1, distField2, timeField1, timeField2;
   private JCheckBox hasHillsCheck1, hasStairsCheck1, hasHillsCheck2, hasStairsCheck2;
+  private Map instanceMap;
+  private String[] locs;
   
-  public AddLocationPanel(){
+  public AddLocationPanel(Map map){
+    instanceMap = map;
     setLayout (new BorderLayout());
     
-    //set font to default as helvetica
-    Font headerFont = new Font("Helvetica", Font.PLAIN, 18);
-    Font customFont = new Font("Helvetica", Font.PLAIN, 15);
-    Font keyFont = new Font("Helvetica", Font.PLAIN, 13);
-    
-    try {
-      //create the font to use. Specify the size!
-      headerFont = Font.createFont(Font.TRUETYPE_FONT, new File("fontBold.ttf")).deriveFont(25f);
-      customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(20f);
-      keyFont = Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")).deriveFont(15f);
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      //register the font
-      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("font.ttf")));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    catch(FontFormatException e)
-    {
-      e.printStackTrace();
-    }
-    
     header = new JLabel("\nFill in the fields below to add a custom location to your map!", SwingConstants.CENTER);
-    header.setFont(headerFont);
+    header.setFont(new Font("Courier New", Font.PLAIN, 16));
     
-    String[] locs = {"(1) Sports Center", "(2) Res Quad", "(3) Alumnae Hall", "(4) Lulu", "(5) Acad Quad", "(6) Science Center", "(7) Tower Court", "(8) Library", "(9) Stone Davis", "(10) East Dorms"}; 
-    //^^will be taken from Map object
+    locs = instanceMap.getLocations();
     
     //initialize combo boxes, using String array ratings for values
     nearbyLoc1Combo = new JComboBox(locs);
-    nearbyLoc1Combo.setFont(keyFont);
     nearbyLoc2Combo = new JComboBox(locs);
-    nearbyLoc2Combo.setFont(keyFont);
     
-    enterName = new JLabel("Name of New Location");
-    enterName.setFont(customFont);
-    JPanel locName = new JPanel();
-    locN = new JTextField(20);
-    locName.add(locN);
+    enterName = new JLabel("Name of new Location");
+    enterName.setFont(new Font("Courier New", Font.PLAIN, 15));
+    locName = new JTextField(20);
     
     //initializes labels for combo boxes
     nearbyLoc1 = new JLabel("Nearby Location 1: ");
-    nearbyLoc1.setFont(customFont);
+    nearbyLoc1.setFont(new Font("Courier New", Font.PLAIN, 15));
     nearbyLoc2 = new JLabel("Nearby Location 2: ");
-    nearbyLoc2.setFont(customFont);
+    nearbyLoc2.setFont(new Font("Courier New", Font.PLAIN, 15));
     
-    JPanel distOne = new JPanel();
     dist1 = new JLabel("Distance to Location 1: ");
-    dist1.setFont(customFont);
     distField1 = new JTextField(10);
-    distOne.add(distField1);
-    //JPanel timeOne = new JPanel();
-    //time1 = new JLabel("Time to Location 1: ");
-    //timeField1 = new JTextField(10);
-    //timeOne.add(timeField1);
+    time1 = new JLabel("Time to Location 1: ");
+    timeField1 = new JTextField(10);
     hasHillsCheck1 = new JCheckBox("The Path to Location 1 has Hills");
-    hasHillsCheck1.setFont(keyFont);
     hasStairsCheck1 = new JCheckBox("The Path to Location 1 has Stairs");
-    hasStairsCheck1.setFont(keyFont);
     
-    JPanel distTwo = new JPanel();
     dist2 = new JLabel("Distance to Location 2: ");
-    dist2.setFont(customFont);
     distField2 = new JTextField(20);
-    distTwo.add(distField2);
-    //time2 = new JLabel("Time to Location 2: ");
-    //timeField2 = new JTextField(20);
+    time2 = new JLabel("Time to Location 2: ");
+    timeField2 = new JTextField(20);
     hasHillsCheck2 = new JCheckBox("The Path to Location 2 has Hills");
-    hasHillsCheck2.setFont(keyFont);
     hasStairsCheck2 = new JCheckBox("The Path to Location 2 has Stairs");
-    hasStairsCheck2.setFont(keyFont);
     
     //creates submit button
     add = new JButton("Add Location");
     add.setPreferredSize(new Dimension(40, 40));
-    //add.addActionListener(new AddButtonListener(map));
-    add.setFont(customFont);
+    add.addActionListener(new AddButtonListener());
+    add.setFont(new Font("Courier New", Font.PLAIN, 12));
     
     //Creates panel for navigation options
     navi = new JPanel();
@@ -106,7 +71,7 @@ public class AddLocationPanel extends JPanel{
     //navi.add(Box.createRigidArea(new Dimension(0, 5)));
     navi.add(nearbyLoc1Combo);
     navi.add(dist1);
-    navi.add(distOne);
+    navi.add(distField1);
     //navi.add(time1);
     //navi.add(timeField1);
     navi.add(hasHillsCheck1);
@@ -115,16 +80,12 @@ public class AddLocationPanel extends JPanel{
     navi.add(Box.createRigidArea(new Dimension(0, 10)));
     navi.add(nearbyLoc2);
     navi.add(nearbyLoc2Combo);
-    //navi.add(Box.createRigidArea(new Dimension(0, 100)));
     navi.add(dist2);
-    navi.add(distTwo);
-    //navi.add(time2);
-    //navi.add(timeField2);
+    navi.add(distField2);
     navi.add(hasHillsCheck2);
     navi.add(hasStairsCheck2);
     navi.add(add);
-    //navi.add(add);
-    //navi.add(Box.createRigidArea (new Dimension (0, 100)));
+
     
     //creates panel for map and key
     mapPic = new JPanel();
@@ -162,12 +123,11 @@ public class AddLocationPanel extends JPanel{
     
     availLocs = new JLabel("Already Added Locations:");
     
-    //map.add(availLocs);
     mapPic.add(jp);
     
     //Initializes footer
     footer = new JLabel("<Directions here>", SwingConstants.CENTER);
-    footer.setFont(customFont);
+    footer.setFont(new Font("Courier New", Font.PLAIN, 16));
     
     //adds elements to frame
     add(header, BorderLayout.NORTH);
@@ -177,44 +137,70 @@ public class AddLocationPanel extends JPanel{
   }
   
   private class AddButtonListener implements ActionListener{
+    private String newNearbyLoc1;
+    private String newNearbyLoc2;
     
-    private Map map;
-    
-    public void AddButtonListener(Map map){
+    public void actionPerformed(ActionEvent event){
+      footer.setText("Yo");
+      
       //save combo box values as a string, if no value was chosen, the default value is 1
-      String newLocName = locN.getText();
+      String newLocName = locName.getText();
       Location l = new Location(newLocName);
-      map.addVertex(l);
+      footer.setText(newLocName);
+      instanceMap.addVertex(l);
+      /*String[] locs = instanceMap.getLocations();
+      String s = ""; 
+      for(int i = 0; i < locs.length; i++){
+        s += locs[i] + " ";
+      }
+      footer.setText(s);
+*/
+      
       try{
-        String newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
+        newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
         double locDist1 = Double.parseDouble(distField1.getText());
         //double timeDist1 = Double.parseDouble(timeField1.getText());
         boolean hasHills1 = hasHillsCheck1.isSelected();
         boolean hasStairs1 = hasStairsCheck1.isSelected();
         
         Path p = new Path(locDist1, hasStairs1, hasHills1);
-        map.addEdge(l, map.findLocation(newNearbyLoc1), p);
+        footer.setText(p.toString());
+        instanceMap.addEdge(l, instanceMap.findLocation(newNearbyLoc1), p);
       }catch(NullPointerException e){
-        System.out.println("You must enter at least 1 Nearby Location");
+        System.out.println("You must enter valid input");
+      }catch(NumberFormatException n){
+        System.out.println("You must enter valid input");
       }
       
+      
+      
       try{
-        String newNearbyLoc2 = nearbyLoc2Combo.getSelectedItem().toString();
+        newNearbyLoc2 = nearbyLoc2Combo.getSelectedItem().toString();
         double locDist2 = Double.parseDouble(distField2.getText());
         //double timeDist1 = Double.parseDouble(timeField1.getText());
         boolean hasHills2 = hasHillsCheck2.isSelected();
         boolean hasStairs2 = hasStairsCheck2.isSelected();
         
         Path p = new Path(locDist2, hasStairs2, hasHills2);
-        map.addEdge(l, map.findLocation(newNearbyLoc2), p);
+        instanceMap.addEdge(l, instanceMap.findLocation(newNearbyLoc2), p);
       }catch(NullPointerException e){
-        //System.out.println("You must enter at least 1 Nearby Location");
+        System.out.println("You must enter valid input.");
+      }catch(NumberFormatException n){
+        System.out.println("You must enter valid input");
       }
-      footer.setText("Directions from ");
-      //add getDirections(origString, destString) to footer
+      footer.setText("New Location \"" + l.toString() + "\" has been added to the map, along with paths that lead to " + newNearbyLoc1 + " and " + newNearbyLoc2 + ".");
+      
+      locs = instanceMap.getLocations();
+    keyText.setText("");
+    keyText.append("Map Key: ");
+    keyText.setRows(1);
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
     }
     
-    public void actionPerformed(ActionEvent event){
-    }
+    
   }
 }
+
