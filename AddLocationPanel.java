@@ -23,6 +23,7 @@ public class AddLocationPanel extends JPanel{
       keyText.append(locs[i]);
     }
   }
+  
   public AddLocationPanel(Map map){
     instanceMap = map;
     setLayout (new BorderLayout());
@@ -179,13 +180,16 @@ public class AddLocationPanel extends JPanel{
     private String newNearbyLoc2;
     
     public void actionPerformed(ActionEvent event){
+      
+      if(!locName.getText().equals("")){
       //footer.setText("Yo");
       
       //save combo box values as a string, if no value was chosen, the default value is 1
-      String newLocName = locName.getText();
+      String newLocName = "(" + (instanceMap.n() + 1) + ") " + locName.getText();
+      
       Location l = new Location(newLocName);
       footer.setText(newLocName);
-      instanceMap.addVertex(l);
+      //instanceMap.addVertex(l);
       /*String[] locs = instanceMap.getLocations();
       String s = ""; 
       for(int i = 0; i < locs.length; i++){
@@ -198,6 +202,7 @@ public class AddLocationPanel extends JPanel{
       
       newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
       if(!newNearbyLoc1.equals("No location selected.")){
+        instanceMap.addVertex(l);
         try{
           //footer.setText("You have to enter at least one nearby location! try again");
         //newNearbyLoc1 = nearbyLoc1Combo.getSelectedItem().toString();
@@ -269,8 +274,16 @@ public class AddLocationPanel extends JPanel{
       }
       HomePanel.setKeyText(locs);
       HomePanel.setComboBoxes(locs);
+      ExplorePanel.setComboBox(locs);
+      ExplorePanel.setKeyText(locs);
+
+    
+    }else{
+      JOptionPane.showMessageDialog(null,
+                                      "Please enter a Location Name");
+    
     }
-    
-    
+  }
   }
 }
+

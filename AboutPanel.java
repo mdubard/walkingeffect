@@ -5,6 +5,7 @@
  * File name: AboutPanel.java
  * Date Created: 12/13/15
  * Last Updated: 12/13/15
+ * Known Bugs: None
  * 
  * Class that contains Panel elements for the About tab of the Walking Effect GUI
  */
@@ -16,7 +17,7 @@ import javax.swing.event.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.media.*;
+//import javax.media.*;
 import java.net.URL;
 import java.applet.*;
 

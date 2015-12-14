@@ -4,7 +4,7 @@
  * 
  * File name: HomePanel.java
  * Date Created: 12/8/15
- * Last Updated: 12/8/15
+ * Last Updated: 12/13/15
  * 
  * Class that contains Panel elements for the Home tab of the Walking Effect GUI
  */
@@ -18,17 +18,42 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class HomePanel extends JPanel{
+public class HomePanel extends JPanel implements ComponentListener{
   private JLabel header, origin, destination, footer;
   private JPanel navi, map;
-  private JComboBox orig, dest;
+  private static JComboBox orig, dest;
   private JButton submit;
-  private JTextArea keyText;
+  private static JTextArea keyText;
   private JTextPane directions;
   private String[] locs;
   private Map m;
   private JCheckBox stairs;
   private JCheckBox steep;
+  
+  public static void setKeyText(String[] locs){
+    keyText.setText("");
+    keyText.append("Map Key: ");
+    //keyText.setRows(1);
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+    //keyText.setFont(keyFont);
+  }
+  
+  public static void setComboBoxes(String[] locs){
+    orig.removeAllItems();
+    for(int i = 0; i < locs.length; i++){
+      orig.addItem(locs[i]);
+    }
+    
+    dest.removeAllItems();
+    for(int i = 0; i < locs.length; i++){
+      dest.addItem(locs[i]);
+    }
+    //orig.addItem(locs);
+    //keyText.setFont(keyFont);
+  }
   
   public HomePanel(Map ma){
     //on load reload locs?
@@ -122,7 +147,7 @@ public class HomePanel extends JPanel{
     
     keyText = new JTextArea(12, 20);
     keyText.setMaximumSize(keyText.getPreferredSize());
-    keyText.setEditable(false);
+    //keyText.setEditable(false);
     keyText.append("Map Key: ");
     //keyText.setRows(1);
     for(int i = 0; i < locs.length; i++){
@@ -154,7 +179,22 @@ public class HomePanel extends JPanel{
     add(navi, BorderLayout.WEST);
     add(map, BorderLayout.EAST);
     add(directions, BorderLayout.SOUTH);
+    
   }
+  
+  public void componentHidden(ComponentEvent e){}
+    public void componentMoved(ComponentEvent e){}
+    public void componentResized(ComponentEvent e){}
+    //rewrite the key when tab shown again
+    public void componentShown(ComponentEvent e){
+    locs = m.getLocations(); 
+      keyText.replaceRange("Map Key: ", 0, keyText.getLineCount()-1);
+      //keyText.setRows(1);
+      for(int i = 0; i < locs.length; i++){
+        keyText.append("\n");
+        keyText.append(locs[i]);
+      }
+    }
   
   private class submitListener implements ActionListener{
     public void actionPerformed(ActionEvent event){
@@ -174,7 +214,7 @@ public class HomePanel extends JPanel{
         avoidHills = true;
       }
       
-      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString), avoidStairs, avoidHills));
+      directions.setText("Directions from " + origString + " to " + destString + ". " + stairsString + hills + "\n" + m.directionsString(m.findLocation(origString), m.findLocation(destString)));
     }
   }
 }

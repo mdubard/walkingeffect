@@ -5,6 +5,7 @@
  * File name: ExplorePanel.java
  * Date Created: 12/8/15
  * Last Updated: 12/11/15
+ * Known Bugs: None
  * 
  * Class that contains Panel elements for the Explore tab of the Walking Effect GUI
  */
@@ -22,14 +23,26 @@ public class ExplorePanel extends JPanel implements ComponentListener{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
   private JLabel nameBold, aboutBold;
-  private JTextArea about, keyText;
+  private static JTextArea about, keyText;
   private JScrollPane aboutScroll, bottomScroll;
-  private JComboBox locMenu;
+  private static JComboBox locMenu;
   private Map map;
   private Location[] locations;
   private Location chosenLocation;
   
-  
+  public static void setComboBox(String[] locs){
+    locMenu.removeAllItems();
+    for(int i = 0; i < locs.length; i++){
+      locMenu.addItem(locs[i]);
+    }
+  }
+  public static void setKeyText(String[] locs){
+    keyText.setText("");
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+  }
   public ExplorePanel(Map m){ //pass in Map from GUI driver
     
     //get location information (from Map passed in)
@@ -128,6 +141,7 @@ public class ExplorePanel extends JPanel implements ComponentListener{
     }
     keyText = new JTextArea(12, 20);
     keyText.setFont(keyFont);
+    keyText.setEditable(false);
     keyText.setMaximumSize(keyText.getPreferredSize());
     keyText.setEditable(false);
     keyText.append("Map Key: ");
