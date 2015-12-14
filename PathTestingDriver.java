@@ -1,3 +1,13 @@
+/* 
+ * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
+ * Writer for this Class: Alyssa Rivera
+ * 
+ * File name: PathTestingDriver.java
+ * Date Created: 12/8/15
+ * Last Updated: 12/8/15
+ * 
+ * Class with main method to test Path
+ */
 public class PathTestingDriver{
   public static void main (String[] args){
   

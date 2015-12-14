@@ -22,14 +22,26 @@ public class ExplorePanel extends JPanel implements ComponentListener{
   private JButton exploreButton;
   private JLabel header, name, picLabel;
   private JLabel nameBold, aboutBold;
-  private JTextArea about, keyText;
+  private static JTextArea about, keyText;
   private JScrollPane aboutScroll, bottomScroll;
-  private JComboBox locMenu;
+  private static JComboBox locMenu;
   private Map map;
   private Location[] locations;
   private Location chosenLocation;
   
-  
+  public static void setComboBox(String[] locs){
+    locMenu.removeAllItems();
+    for(int i = 0; i < locs.length; i++){
+      locMenu.addItem(locs[i]);
+    }
+  }
+  public static void setKeyText(String[] locs){
+    keyText.setText("");
+    for(int i = 0; i < locs.length; i++){
+      keyText.append("\n");
+      keyText.append(locs[i]);
+    }
+  }
   public ExplorePanel(Map m){ //pass in Map from GUI driver
     
     //get location information (from Map passed in)
