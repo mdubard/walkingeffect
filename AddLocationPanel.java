@@ -276,6 +276,7 @@ public class AddLocationPanel extends JPanel{
       HomePanel.setComboBoxes(locs);
       ExplorePanel.setComboBox(locs);
       ExplorePanel.setKeyText(locs);
+
     
     }else{
       JOptionPane.showMessageDialog(null,
