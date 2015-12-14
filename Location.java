@@ -2,6 +2,7 @@
 /**
  * Team: Mary DuBard, Hannah Murphy, Alyssa Rivera
  * Author of this class: Alyssa Rivera
+ * 
  * Created: December 8th, 2015
  * Last Modified: December 10th, 2015
  * Known Bugs: none
