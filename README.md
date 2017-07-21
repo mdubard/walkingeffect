@@ -26,8 +26,6 @@ and make sure all of the below files are there:
 -WalkingEffectGUI.java
 -WellesleyMap.java
 ### Folders:
--font
--images
 -javafoundations
  
 ## II. Run the Program:
